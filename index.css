@@ -1,0 +1,358 @@
+#footer {
+  height: 250px;
+  background-color: #d9d9d9;
+  margin-top: 45px;
+  padding: 40px;
+}
+
+.swiper-pagination-bullet { 
+  background-color: #d9d9d9; opacity: 1; 
+} 
+.swiper-pagination-bullet-active {
+  background: #ff9900; opacity: 1; 
+} 
+
+#brandFooter {
+  font-weight: 100; 
+  text-align: center;
+}
+
+#horairesTitle {
+  color: #ffffff;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.commercialText {
+  margin-bottom: 2px;
+}
+
+#commercialTitle {
+  margin-bottom: 20px;
+}
+
+#newsletterTitle {
+  margin-bottom: 20px;
+}
+
+.fa-copyright {
+  margin-right: 3px;
+}
+
+#emailFooter {
+  margin-bottom: 20px;
+  margin-top: 30px;
+  font-weight: 500; 
+  text-align: center;
+}
+
+#telFooter {
+  margin-bottom: 20px; 
+  margin-top: 0px;
+  font-weight: 500; 
+  text-align: center;
+}
+
+#socialNetworkText {
+  font-weight: 500;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.fa-envelope {
+  margin-right: 10px;
+  text-decoration: none;
+}
+
+.fa-phone-alt {
+  margin-right: 10px;
+  text-decoration: none;
+}
+
+.fa-instagram {
+  margin-right: 10px;
+  text-decoration: none;
+  color: black;
+}
+
+.fa-twitter {
+  margin-right: 10px;
+  text-decoration: none;
+  color: black;
+}
+
+.fa-facebook {
+  margin-right: 10px;
+  text-decoration: none;
+  color: black;
+}
+
+.fa-snapchat-ghost {
+  margin-right: 10px;
+  text-decoration: none;
+  color: black;
+}
+
+.card-body {
+  padding-bottom: 0em;
+}
+
+.card {
+  margin-bottom: 40px;
+}  
+
+#pContact {
+  font-weight: 500;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+#pContactHref {
+  text-decoration: none;
+  color: #ff9900;
+}
+
+#button-addon2.btn-outline-secondary:hover, .btn-outline-secondary:focus, .btn-outline-secondary:active, .btn-outline-secondary.active, .open>.dropdown-toggle.btn-outline-secondary {
+    color: #fdfdfd!important;
+    background-color: rgba(255, 153, 0, 1)!important;
+    border-color: #ff9900!important;
+}
+
+#button-addon2.btn-outline-secondary {
+    color: #fdfdfd;
+    background-color: transparent;
+    background-image: none;
+    border-color: #fdfdfd;
+}
+
+#customButton.btn-outline-secondary:hover, .btn-outline-secondary:focus, .btn-outline-secondary:active, .btn-outline-secondary.active, .open>.dropdown-toggle.btn-outline-secondary {
+    color: #fdfdfd!important;
+    background-color: rgba(255, 153, 0, 1)!important;
+    border-color: #ff9900!important;
+}
+
+#venteButton.btn-outline-secondary {
+    color: #fdfdfd;
+    background-color: transparent;
+    background-image: none;
+    border-color: #fdfdfd;
+}
+
+#venteButton.btn-outline-secondary:hover, .btn-outline-secondary:focus, .btn-outline-secondary:active, .btn-outline-secondary.active, .open>.dropdown-toggle.btn-outline-secondary {
+    color: #fdfdfd!important;
+    background-color: rgba(255, 153, 0, 1)!important;
+    border-color: #ff9900!important;
+/*     opacity: 0.5; */
+}
+
+#locationButton.btn-outline-secondary {
+    color: #fdfdfd;
+    background-color: transparent;
+    background-image: none;
+    border-color: #fdfdfd;
+}
+
+#locationButton.btn-outline-secondary:hover, .btn-outline-secondary:focus, .btn-outline-secondary:active, .btn-outline-secondary.active, .open>.dropdown-toggle.btn-outline-secondary {
+    color: #fdfdfd!important;
+    background-color: rgba(255, 153, 0, 1)!important;
+    border-color: #ff9900!important;
+/*     opacity: 0.5; */
+}
+
+#headerTitre {
+ margin-top: 10px;
+ color: #fdfdfd;
+}
+
+#headerText {
+ color: #fdfdfd;
+ display: flex;
+ justify-content: center;
+ flex-direction: column;
+ text-align: center; 
+}
+
+#enteteSwiper {
+  font-weight: 500;
+}
+
+.jour {
+  color: #ffffff;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+#topContainer {
+  height: 400px;
+  background-image: linear-gradient(to top, rgba(245, 246, 252, 0.0), rgba(0, 0, 0, 0.75)), url("imagesProjet/amiens.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+#horaires {
+  height: 300px;
+  background-image: linear-gradient(to top, rgba(245, 246, 252, 0.0), rgba(0, 0, 0, 0.75)), url("imagesProjet/bureau.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+#commercial{
+  height: 300px;
+  background-image: linear-gradient(to top, rgba(245, 246, 252, 0.0), rgba(0, 0, 0, 0.76)), url("imagesProjet/vente.jpg"); 
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  color: #fdfdfd;
+  font-weight: 600;
+
+}
+
+#newsletter {
+  height: 300px;
+  background-image: linear-gradient(to top, rgba(245, 246, 252, 0.0), rgba(0, 0, 0, 0.75)), url("imagesProjet/maison.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding-top: 15px;
+  padding-bottom: 15px;  
+  color: #fdfdfd; 
+  font-weight: 600;  
+}
+
+@media (max-width: 576px) {
+  #topContainer {
+    height: 150px;
+  } 
+  #horaires {
+    
+  }
+  #commercial {
+    
+  }
+  #newsletter {
+    
+  }
+}
+
+@media (min-width: 0px) {
+  #topContainer {
+  } 
+  #horaires {
+    
+  }
+  #commercial {
+    
+  }
+  #newsletter {
+    
+  }
+  #bandeBottomHeader {
+/*     height: 40px;
+    width: 100%;
+/*     background-color: #ff9900; */
+    background-image: linear-gradient(to top, rgba(245, 246, 252, 0.2), rgba(255, 153, 0, 0.5)); */
+  }
+  #swiperContainer {
+    margin-top: 30px;
+  }
+  #contentContainer {
+    margin-top: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  #topContainer {
+    height: 250px;
+  } 
+  #horaires {
+    
+  }
+  #commercial {
+    
+  }
+  #newsletter {
+    
+  }
+  #venteButton {
+  margin-bottom: 5px;
+  } 
+}
+
+@media (min-width: 768px) {
+  #venteButton {
+  margin-right: 5px;
+  }
+  #venteLocation {
+  margin-left: 5px;
+  }
+  #headerTitre {
+  margin-top: 100px;
+  }
+  #horaires {
+    height: 375px;
+  }
+  #commercial {
+    height: 375px;
+  }
+  #newsletter {
+    height: 375px;    
+  }  
+}
+
+@media (max-width: 992px) {
+  #topContainer {
+    
+  } 
+  #horaires {
+  }
+  #commercial {
+  }
+  #newsletter {
+    
+  }
+}
+
+@media (min-width: 992px) {
+  #topContainer {
+    
+  } 
+  #horaires {
+    height: 375px;
+  }
+  #commercial {
+  }
+  #newsletter {
+  }
+}
+
+@media (max-width: 1200px) {
+  #topContainer {
+    
+  } 
+  #horaires {
+  margin-bottom: 20px;     
+  }
+  #commercial {
+  margin-bottom: 20px;     
+  }
+  #newsletter {  
+  }  
+}
+
+@media (min-width: 1200px) {
+  #topContainer {
+    
+  } 
+  #horaires {
+  }
+  #commercial {
+  margin-left: 20px; 
+  margin-right: 20px;     
+  }
+  #newsletter {  
+  margin-left: 20px; 
+  margin-right: 20px;     
+  }  
+}

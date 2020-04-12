@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/swiper/css/swiper.min.css">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="https://kit.fontawesome.com/1804e69ab6.js" crossorigin="anonymous"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, shrink-to-fit=no">
+  {% block style %}{% endblock %}
+  {% block title %}
+  <title>Home</title>
+  {% endblock %}
+</head>
+
+<body>
+{% block navbar %}
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #ff9900;">
+<!--   <a class="navbar-brand mb-0 h1">Félix Immobilier</a> -->
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button> <!--button s'affiche qu'en format le plus petit (telephone) -->
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+     
+      <li class="nav-item">
+        <a class="nav-link" href="{{ path }}?c=annonce" id="home">Home<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ path }}?c=annonce&t=list" id="annonces">Annonces</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ path }}?c=annonce&t=contact">Contact</a>
+      </li>
+    </ul>
+      
+      
+       {% if user.id == false %}
+      <ul class="navbar-nav ml-auto">
+      <li class="nav-item ">
+        <a class="nav-link" href="{{ path }}?c=user&t=inscription">S'inscrire</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ path }}?c=user&t=connexion">Se connecter</a>
+      </li>
+      </ul>
+     {% endif %}     
+    
+    
+     {% if user.role == "utilisateur" %}    
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link far fa-user-circle" href="{{ path }}?c=user&t=profil"></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link fas fa-sign-out-alt" id="disconnect" href="{{ path }}?c=user&t=disconnect"></a>
+      </li>
+    </ul>
+     {% endif %}
+    
+     {% if user.role == "admin" %}    
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item dropdown">
+        <a class="nav-link fas fa-cog" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{{ path }}?c=annonce&t=new">Ajouter une annonce</a>
+           <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="{{ path }}?c=admin">Gerer les utilisateurs</a> 
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link fas fa-sign-out-alt" href="{{ path }}?c=user&t=disconnect"></a>
+      </li>
+    </ul>
+     {% endif %}
+  </div>
+</nav>
+{% endblock %}  
+  {% block body %}
+  {% endblock %}
+   
+  </body>
+</html>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://unpkg.com/swiper/js/swiper.min.js"></script>
+
+{% block script %}
+{% endblock %}
+<script>
+ 
+ document.getElementById('home').addEventListener('click', function() {
+   localStorage.setItem('page', 1);
+ });
+  
+  document.getElementById('annonces').addEventListener('click', function() {
+   localStorage.setItem('page', 1);
+ }); 
+  
+</script>

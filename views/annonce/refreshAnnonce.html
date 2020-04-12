@@ -1,0 +1,87 @@
+<div class="row">
+{% for annonce in annonces %}
+<div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 mb-4">
+  <div class="card">
+    <img src="https://images.sftcdn.net/images/t_app-cover-l,f_auto/p/ce2ece60-9b32-11e6-95ab-00163ed833e7/260663710/the-test-fun-for-friends-screenshot.jpg" class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">{{ annonce.titre }}</h5>
+      <p class="card-text">{{ annonce.description }}</p>
+      <p class="card-text">{{ annonce.prix ~ '€' }}</p>
+      <div class="d-flex flex-row mb-3">
+        <a href="{{ path }}?c=annonce&t=show&annonceID={{ annonce.id }}" class="btn btn-outline-secondary p-2">Voir l'annonce</a>
+        {% if user.role == "admin" %}
+        <a href="{{ path }}?c=annonce&t=edit&annonceID={{ annonce.id }}" class="p-2 ml-auto iconColorGreyToBlack"><i class="far fa-edit"></i></a>
+        <a href="{{ path }}?c=annonce&t=delete&annonceID={{ annonce.id }}" class="p-2 iconColorGreyToRed"><i class="far fa-trash-alt"></i></a> 
+        {% endif %} 
+        {% if user.role != "admin" %}
+        {% if annonce in user.annonces %}
+        <div class="p-2 ml-auto">
+          <i class="like fas fa-heart" style="color: red; cursor: pointer" data-annonce-id='{{ annonce.id }}' id='{{ annonce.id }}'></i>
+        </div>
+        {% else %} 
+        <div class="p-2 ml-auto">
+          <i class="like far fa-heart" style="cursor: pointer" data-annonce-id='{{ annonce.id }}' id='{{ annonce.id }}'></i>
+        </div>
+       {% endif %} 
+       {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+</div>
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            {% for page in range(1, pages) %}
+            <li class="page-item"><a class="page-link" data-page-id="{{ page }}">{{ page }}</a></li>
+            {% endfor %}
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+
+<script>
+$(".like").click(function() {
+        const annonceID = $(this).data('annonce-id');
+
+        $.ajax({
+            url: "{{ path }}?c=annonce&t=like&annonceID=" + annonceID,
+            type: "GET",
+            dataType: "JSON",
+            contentType: 'application/json',
+            success: function () {
+                const annonce = document.getElementById(annonceID);
+                if (annonce.className === "like fas fa-heart") {
+                    annonce.className = "like far fa-heart";
+                    annonce.style.color = "black";
+                }
+                else if (annonce.className === "like far fa-heart") {
+                    annonce.className = "like fas fa-heart";
+                    annonce.style.color = "red";
+                }
+            },
+            error: function () {
+                console.log('error');
+                alert('Merci de bien vouloir vous connecter pour ajouter cette annonce à votre wishlist.')
+            }
+        });
+    });
+  
+$(".page-link").click(function() {
+    const page = $(this).data('page-id');
+    localStorage.setItem('page', page);  
+    rechercheAnnonce(page)
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+  });
+</script>

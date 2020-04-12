@@ -1,0 +1,342 @@
+{% extends "base.html" %}
+
+{% block title %}
+  <title>Creer une annonce</title>
+{% endblock %}
+
+{% block style %}
+  <link href='newAnnonce.css' type='text/css' rel='stylesheet' />
+{% endblock %}
+
+
+
+{% block body %}
+  <br>  
+  <br>  
+  <h1 style="text-align:center"> Ajouter une annonce </h1>
+  <br>  
+  <br>  
+
+ <form action="{{ path }}?c=annonce&t=create" method="post" enctype="multipart/form-data">>
+
+  <div class="container-fluid">
+   <!--   <div class="row"> -->
+        <div class="col-12 col-sm-10 offset-sm-1 col-md-10 offset-md-1 col-lg-10 offset-lg-1 col-xl-8 offset-xl-2">
+          
+         <div class=form-row>
+          <div class="form-group col">
+            <label for="titre">Titre de l'annonce :</label>
+            <input class=form-control type="text" id="titre" name="titre_annonce" placeholder="Titre de l'annonce" required>
+          </div> 
+         </div>
+
+         <div class=form-row>
+          <div class="form-group col">
+            <label for="description">Description de l'annonce :</label>
+            <textarea class=form-control id="libelle" name="description_annonce" placeholder="Description de l'annonce" required></textarea>
+          </div>
+         </div>  
+         
+         <div class=form-row>
+          <div class="form-group col-12 col-lg-6">
+            <label for="Prix">Prix :</label>
+            <input class=form-control type="prix" name="prix_annonce" id="prix" placeholder="Prix du bien" required>
+          </div>
+           
+          <div class="form-group col-12 col-lg-6">
+            <label for="Date">Date à partir de laquelle le bien est disponible :</label>
+            <input class=form-control type="date" name="date_dispo_annonce" id="date" required>
+          </div>
+         </div>
+          
+         <div class=form-row>
+          <div class="form-group col-12 col-lg-6">
+            <label for="surface">Surface de l'habitation :</label>
+            <input class=form-control id="surface" name="surface_annonce" placeholder="Surface de l'habitation" required>
+          </div>
+
+          <div class="form-group col-12 col-lg-6">
+            <label for="surface_total">Surface totale :</label>
+            <input class=form-control id="surface_total" name="surface_total_annonce" placeholder="Surface totale" required>
+          </div>
+         </div>
+          
+          
+          <div class=form-row>
+          <div class="form-group col-12 col-lg-6">
+            <label for="type_propriete">Type de propriété :</label>
+              <select id="typePropriete" class=form-control name="type_propriete" onchange="isAppartement()" required>
+                <option selected>Choisissez..</option>
+                <option value ="appartement">Appartement</option> 
+                <option value ="maison">Maison</option> 
+                <option value ="villa">Villa</option> 
+                <option value ="hotel">Hotel</option> 
+                <option value ="bungalow">Bungalow</option> 
+                <option value ="complexe">Complexe</option> 
+                <option value ="cabane">Cabane</option> 
+                <option value ="chalet">Chalet</option> 
+                <option value ="chateau">Chateau</option> 
+              </select>
+          </div>
+
+          <div class="form-group col-12 col-lg-6">
+            <label for="type_contrat">Type de contrat :</label>
+              <select id="typeContrat" class=form-control name="type_contrat" onchange="isLocation()">
+                <option selected>Choisissez..</option>
+                <option value ="vente">Vente</option> 
+                <option value ="location">Location</option>  
+              </select>
+          </div>
+          </div>
+
+            <!--         SI APPARTEMENT CHOISI        -->
+          <div class=form-row>
+          <div id="typeAppartement" class="form-group col-12 col-lg-6">
+            <label for="type_annonce_appartement">Type d'appartement :</label>
+              <select class=form-control name="type_annonce_appartement">
+                <option value= null selected>Choisissez..</option>
+                <option value ="studio">Studio</option> 
+                <option value ="loft">Loft</option> 
+                <option value ="duplex">Duplex</option> 
+                <option value ="souplex">Souplex</option> 
+              </select>
+          </div> 
+            
+          <div id="etage" class="form-group col-12 col-lg-6">
+            <label for="etage_annonce">Etage :</label>
+            <input class=form-control id="etage_annonce" name="etage_annonce" placeholder="Etage - indiquer 0 pour le rez de chaussée">
+          </div>
+          </div>  
+              <!--         FIN DE CHOX SI APPARTEMENT CHOISI -->
+            
+              <!--        SI LOCATION CHOISI -->
+          <div id="ameublement" class=form-row>
+          <div class="form-group col-12 col-lg-12">
+            <label for="ameublement_annonce">Ameublement :</label>
+              <select class=form-control name="ameublement_annonce">
+                <option value= null selected>Choisissez..</option>
+                <option value ="studio">Meublé</option> 
+                <option value ="loft">Non-meublé</option>  
+              </select>
+          </div>
+          </div>
+              <!--         FIN DE CHOX SI LOCATION CHOISI -->
+
+
+
+          <div class=form-row>
+          <div class="form-group col-12 col-lg-3">
+            <label for="nombre_pieces_annonce">Nombre de pieces :</label>
+            <input class=form-control id="nombre_pieces_annonce" name="nombre_pieces_annonce" placeholder="Nombre de pieces" required>
+          </div>
+          
+          <div class="form-group col-12 col-lg-3">
+            <label for="nombre_salle_bain_annonce">Nombre de salle de bain :</label>
+            <input class=form-control id="nombre_salle_bain_annonce" name="nombre_salle_bain_annonce" placeholder="Nombre de salle de bain" required>
+          </div>
+    
+          <div class="form-group col-12 col-lg-3">
+            <label for="nombre_salle_eau_annonce">Nombre de salle d'eau :</label>
+            <input class=form-control id="nombre_salle_eau_annonce" name="nombre_salle_eau_annonce" placeholder="Nombre de salle d'eau" required>
+          </div>
+                  
+          <div class="form-group col-12 col-lg-3">
+            <label for="nombre_chambre_annonce">Nombre de chambre :</label>
+            <input class=form-control id="nombre_chambre_annonce" name="nombre_chambre_annonce" placeholder="Nombre de chambre" required>
+          </div> 
+          </div>
+
+          <p>Installation(s) :</p>
+          <div class="custom-control custom-checkbox checkbox_horizontal">
+            <input class="custom-control-input" type="checkbox" id="piscine_annonce" name="piscine_annonce">
+            <label class="custom-control-label" for="piscine_annonce">Piscine</label>
+          </div>
+          <div class="custom-control custom-checkbox checkbox_horizontal">
+            <input class="custom-control-input" type="checkbox" id="jacuzzi_annonce" name="jacuzzi_annonce">
+            <label class="custom-control-label" for="jacuzzi_annonce">Jacuzzi</label>
+          </div>
+          <div class="custom-control custom-checkbox checkbox_horizontal">
+            <input class="custom-control-input" type="checkbox" id="ascenseur_annonce" name="ascenseur_annonce">
+            <label class="custom-control-label" for="ascenseur_annonce">Ascenseur</label>
+          </div>
+          <div class="custom-control custom-checkbox checkbox_horizontal">
+            <input class="custom-control-input" type="checkbox" id="salle_de_sport_annonce" name="salle_de_sport_annonce">
+            <label class="custom-control-label" for="salle_de_sport_annonce">Salle de sport</label>
+          </div>
+          <div class="custom-control custom-checkbox checkbox_horizontal">
+            <input class="custom-control-input" type="checkbox" id="place_de_parking_annonce" name="place_de_parking_annonce">
+            <label class="custom-control-label" for="place_de_parking_annonce">Place de parking</label>
+          </div>
+          <br>
+          <br>
+          <br>
+          <!-- MAX_FILE_SIZE doit précéder le champ input de type file -->
+          <!-- Le nom de l'élément input détermine le nom dans le tableau $_FILES -->
+<!--           <label for="file" class="label-file">Choisir une image</label>
+          <input class="inputfile" type="file" name="image[]" multiple="multiple" /> -->
+          
+
+            <div class="custom-file">
+              <input type="hidden" name="MAX_FILE_SIZE" value="5000000" />
+              <input type="file" class="custom-file-input" id="inputGroupFile01" name="image[]" multiple>
+              <label class="custom-file-label" for="inputGroupFile01">Choisissez les images</label>
+            </div>
+            <br>
+            <br>
+             <div style="text-align:center; color:red" id="preview">
+              <p>Aucun fichier sélectionné pour le moment</p>
+             </div>
+
+ 
+ 
+          <br>
+          <br>
+          <button type="submit" name="submit" id="newAnnonceButton" class="btn btn-secondary btn btn-block">Ajouter l'annonce</button>
+          <br>
+          <br>
+            
+              </div>
+            </div>
+  </form>
+
+{% endblock %}
+
+{% block script %}
+
+<script>
+
+  var input = document.getElementById('inputGroupFile01');
+  var preview = document.getElementById('preview');
+  var fileTypes = [
+  'image/jpeg',
+  'image/jpg',
+  'image/png'
+  ];
+
+  input.addEventListener('change', updateImageDisplay);
+   
+  function validFileType(file) {
+    for(var i = 0; i < fileTypes.length; i++) {
+      if(file.type === fileTypes[i]) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
+  function returnFileSize(number) { // ici number sera remplacé par curFiles.size dans la fonction plus bas
+    if(number < 1024) {
+      return number + ' octets';
+    } 
+    else if(number >= 1024 && number < 1048576) {
+      return (number/1024).toFixed(1) + ' Ko';
+    } 
+    else if(number >= 1048576) {
+      return (number/1048576).toFixed(1) + ' Mo';
+    }
+  }
+
+  function updateImageDisplay() {
+    
+    while(preview.firstChild) { // tant que des enfants existe sur preview alors on les supprime, autrement dit on supprime TOUS les enfants de preview
+      preview.removeChild(preview.firstChild);
+    }
+    
+    var curFiles = input.files; // on utilise l'objet FilesList dans une variable
+
+    if(curFiles.length === 0) { 
+      var p = document.createElement('p');
+      p.textContent = 'Aucun fichier sélectionné pour le moment';
+      preview.appendChild(p); // on ajoute le para('p') dans le preview('div')
+    } 
+    
+    else {
+    var divItem = document.createElement('div');
+    
+    for (var i = 0; i < curFiles.length; i++) { // tant que i < curFiles.length revient a dire 'pour chaque files inserer
+      if (validFileType(curFiles[i])) {
+        
+        var imgBorder = document.createElement('div');
+        var helper = document.createElement('span');
+        
+        helper.style.display = "inline-block";
+        helper.style.height = "100%";
+        helper.style.verticalAlign = "middle";
+        imgBorder.style.width = "204px";
+        imgBorder.style.height = "204px";
+        imgBorder.style.margin = "5px";
+        imgBorder.style.display = "inline-block";
+        imgBorder.style.verticalAlign = "middle";
+        imgBorder.style.border = "2px solid #ff9900";
+        imgBorder.style.backgroundColor = "#e6e6e6";
+        imgBorder.style.borderRadius = "10px";
+        
+        const img = document.createElement('img'); // on creer un element de type img
+        const max_size = 200;
+
+        img.src = window.URL.createObjectURL(curFiles[i]); // quand on met une src a un element img une url se charge, ici on utilise une méthode qui nous créer directement une url
+        img.onload = function(curFiles){ 
+            var width = img.width;
+            var height = img.height;
+            
+            if (width > height) {
+              if (width > max_size) {
+                  height *= max_size / width;
+                  width = max_size;
+              }
+            }  
+            else {
+              if (height > max_size) {
+                  width *= max_size / height;
+                  height = max_size;
+              }
+            } 
+            img.width = width;
+            img.height = height;
+        }
+        imgBorder.appendChild(helper);
+        imgBorder.appendChild(img); 
+        divItem.appendChild(imgBorder);
+      } 
+      
+      else {
+        var p = document.createElement('p');
+        p.textContent = 'Nom du fichier ' + curFiles[i].name + ' : Format d\'image non valide. Les formats autorisés sont JPEG, PNG et JPG'; // spécifie quel fichier est au mauvais format
+        divItem.appendChild(p);
+      }
+
+    }
+      preview.appendChild(divItem);
+  }
+}
+ 
+  
+ function isAppartement(){
+   
+  var typePropriete = document.getElementById('typePropriete').value;
+  
+  if (typePropriete == 'appartement'){
+      document.getElementById('typeAppartement').style.display = 'inline';
+      document.getElementById('etage').style.display = 'inline';
+  }
+  else {
+      document.getElementById('typeAppartement').style.display = 'none';
+      document.getElementById('etage').style.display = 'none';
+  }
+ }
+  
+  function isLocation(){
+    
+    var typeContrat = document.getElementById('typeContrat').value;
+    
+    if (typeContrat == 'location'){ 
+        document.getElementById('ameublement').style.display = 'block';
+    }
+    else {
+      document.getElementById('ameublement').style.display = 'none';
+    } 
+  }
+
+</script>
+
+{% endblock %}

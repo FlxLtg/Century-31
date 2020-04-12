@@ -1,0 +1,318 @@
+{% extends "base.html" %}
+
+{% block style %}
+<link href='listAnnonce.css' type='text/css' rel='stylesheet' />
+{% endblock %}
+
+{% block navbar %}
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #ff9900;">
+<!--   <a class="navbar-brand mb-0 h1">Félix Immobilier</a> -->
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button> <!--button s'affiche qu'en format le plus petit (telephone) -->
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+     
+      <li class="nav-item">
+        <a class="nav-link" href="{{ path }}?c=annonce" id="home">Home<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="" id="achat">Achat</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="" id="location">Location</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="" id="rechercheAvancee">Recherche avancée</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ path }}?c=annonce&t=contact">Contact</a>
+      </li>
+    </ul>
+      
+      
+       {% if user.id == false %}
+      <ul class="navbar-nav ml-auto">
+      <li class="nav-item ">
+        <a class="nav-link" href="{{ path }}?c=user&t=inscription">S'inscrire</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ path }}?c=user&t=connexion">Se connecter</a>
+      </li>
+      </ul>
+     {% endif %}     
+    
+    
+     {% if user.role == "utilisateur" %}    
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link far fa-user-circle" href="{{ path }}?c=user&t=profil"></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link fas fa-sign-out-alt" id="disconnect" href="{{ path }}?c=user&t=disconnect"></a>
+      </li>
+    </ul>
+     {% endif %}
+    
+     {% if user.role == "admin" %}    
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item dropdown">
+        <a class="nav-link fas fa-cog" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{{ path }}?c=annonce&t=new">Ajouter une annonce</a>
+           <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="{{ path }}?c=admin">Gerer les utilisateurs</a> 
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link fas fa-sign-out-alt" href="{{ path }}?c=user&t=disconnect"></a>
+      </li>
+    </ul>
+     {% endif %}
+  </div>
+</nav>
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid" style="display: none" id="rechercheTemplate">
+    <div class="row marginBottom">
+        <div class="col-4 col-md-4 col-lg-3">
+            <br>
+            <label for="type_contrat">Type de contrat :</label>
+            <select id="typeContrat" class="form-control" name="type_contrat">
+                <option selected value="null">Choisissez..</option>
+                <option value="vente">Vente</option>
+                <option value="location">Location</option>
+            </select>
+            <label for="type_propriete">Type de propriété :</label>
+            <select id="typePropriete" class="form-control" name="type_propriete" onchange="isAppartement()">
+                <option selected value="null">Choisissez..</option>
+                <option value="appartement">Appartement</option>
+                <option value="maison">Maison</option>
+                <option value="villa">Villa</option>
+                <option value="hotel">Hotel</option>
+                <option value="bungalow">Bungalow</option>
+                <option value="complexe">Complexe</option>
+                <option value="cabane">Cabane</option>
+                <option value="chalet">Chalet</option>
+                <option value="chateau">Chateau</option>
+            </select>
+            <div id="typeAppartement">
+                <label for="type_annonce_appartement">Type d'appartement :</label>
+                <select id="typeAnnonceAppartement" class="form-control" name="type_annonce_appartement">
+                    <option value="null" selected>Choisissez..</option>
+                    <option value="studio">Studio</option>
+                    <option value="loft">Loft</option>
+                    <option value="duplex">Duplex</option>
+                    <option value="souplex">Souplex</option>
+                </select>
+            </div>
+            <br>
+        </div>
+        <div class="col-4 col-md-4 col-lg-3 noPadding">
+            <br>
+            <label for="surface">Surface de l'habitation :</label>
+            <div class="row">
+                <input class="form-control col-5" id="surface1" name="surface_annonce1" placeholder="Min">
+                <input class="form-control col-5 offset-2" id="surface2" name="surface_annonce2" placeholder="Max">
+            </div>
+
+            <label for="surfaceTotal">Surface totale :</label>
+            <div class="row">
+                <input class="form-control col-5" id="surfaceTotal1" name="surface_total1" placeholder="Min">
+                <input class="form-control col-5 offset-2" id="surfaceTotal2" name="surface_total2" placeholder="Max">
+            </div>
+
+            <label for="prix">Prix :</label><br>
+            <div class="row">
+                <input class="form-control col-5" id="prix1" name="prix1" placeholder="Min">
+                <input class="form-control col-5 offset-2" id="prix2" name="prix2" placeholder="Max">
+            </div>
+            <br>
+        </div>
+        <div class="col-4 col-md-4 col-lg-3">
+            <br>
+            <p>Installation(s) :</p>
+            <div class="custom-control custom-checkbox">
+                <input class="custom-control-input" type="checkbox" id="piscine_annonce" name="piscine_annonce">
+                <label class="custom-control-label" for="piscine_annonce">Piscine</label>
+            </div>
+            <div class="custom-control custom-checkbox">
+                <input class="custom-control-input" type="checkbox" id="jacuzzi_annonce" name="jacuzzi_annonce">
+                <label class="custom-control-label" for="jacuzzi_annonce">Jacuzzi</label>
+            </div>
+            <div class="custom-control custom-checkbox">
+                <input class="custom-control-input" type="checkbox" id="ascenseur_annonce" name="ascenseur_annonce">
+                <label class="custom-control-label" for="ascenseur_annonce">Ascenseur</label>
+            </div>
+            <div class="custom-control custom-checkbox">
+                <input class="custom-control-input" type="checkbox" id="salle_de_sport_annonce"
+                    name="salle_de_sport_annonce">
+                <label class="custom-control-label" for="salle_de_sport_annonce">Salle de sport</label>
+            </div>
+            <div class="custom-control custom-checkbox">
+                <input class="custom-control-input" type="checkbox" id="place_de_parking_annonce"
+                    name="place_de_parking_annonce">
+                <label class="custom-control-label" for="place_de_parking_annonce">Place de parking</label>
+            </div>
+            <button id="rechercheButton" type="button" class="btn btn-secondary btn btn-block">Rechercher</button>
+            <br>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid" id="refreshAnnonce">
+</div>
+
+{% endblock %}
+
+
+{% block script %}
+<script>
+  
+    function isAppartement() {
+
+        var typePropriete = document.getElementById('typePropriete').value;
+
+        if (typePropriete == 'appartement') {
+            document.getElementById('typeAppartement').style.display = 'inline';
+        }
+        else {
+            document.getElementById('typeAppartement').style.display = 'none';
+        }
+    };
+
+    function rechercheAnnonce(page) {
+        var contrat = $("#typeContrat").val();
+        var propriete = $("#typePropriete").val();
+        var typeAppartement = $("#typeAnnonceAppartement").val();
+        var surface1 = $("#surface1").val();
+        var surface2 = $("#surface2").val();
+        var surfaceTotal1 = $("#surfaceTotal1").val();
+        var surfaceTotal2 = $("#surfaceTotal2").val();
+        var prix1 = $("#prix1").val();
+        var prix2 = $("#prix2").val();
+        var piscineAnnonce = document.getElementById("piscine_annonce").checked;
+        var jacuzziAnnonce = document.getElementById("jacuzzi_annonce").checked;
+        var ascenseurAnnonce = document.getElementById("ascenseur_annonce").checked;
+        var salleDeSportAnnonce = document.getElementById("salle_de_sport_annonce").checked;
+        var placeDeParkingAnnonce = document.getElementById("place_de_parking_annonce").checked;
+
+        var data = JSON.stringify({
+            contrat: contrat,
+            propriete: propriete,
+            typeAppartement: typeAppartement,
+            surface1: surface1,
+            surface2: surface2,
+            surfaceTotal1: surfaceTotal1,
+            surfaceTotal2: surfaceTotal2,
+            prix1: prix1,
+            prix2: prix2,
+            piscineAnnonce: piscineAnnonce,
+            jacuzziAnnonce: jacuzziAnnonce,
+            ascenseurAnnonce: ascenseurAnnonce,
+            salleDeSportAnnonce: salleDeSportAnnonce,
+            placeDeParkingAnnonce: placeDeParkingAnnonce,
+        });
+        
+        let newPage = localStorage.getItem('page') || 1; // test page, si localStorage('page') pas définit alors page = 1
+
+        $.ajax({
+            url: "{{ path }}?c=annonce&t=recherche&page=" +newPage,
+            type: "POST",
+            data: data,
+            contentType: "application/json",
+            success: function ($response) {
+                $('#refreshAnnonce').html($response)
+              console.log("success");
+            },
+            error: function ($xhr) {
+            }
+        });
+    }
+    
+    rechercheAnnonce()
+
+    $("#rechercheButton").click(function(){
+      localStorage.setItem('page', 1);
+      rechercheAnnonce();
+    });
+  
+ document.getElementById("rechercheAvancee").addEventListener('click', function(e){
+ e.preventDefault();
+   
+ const rechercheTemplate = document.getElementById("rechercheTemplate");
+   
+   if(rechercheTemplate.style.display === "none"){
+     $("#rechercheTemplate").slideDown("slow")
+   }
+   else {
+     $("#rechercheTemplate").slideUp("slow")
+   }
+  
+ });
+  
+ $('#achat').click(function(e) {
+   e.preventDefault();
+    var data = JSON.stringify({
+            contrat: "vente",
+            propriete: "null",
+            typeAppartement: "null",
+            surface1: "",
+            surface2: "",
+            surfaceTotal1: "",
+            surfaceTotal2: "",
+            prix1: "",
+            prix2: "",
+            piscineAnnonce: false,
+            jacuzziAnnonce: false,
+            ascenseurAnnonce: false,
+            salleDeSportAnnonce: false,
+            placeDeParkingAnnonce: false,
+    });
+      $.ajax({
+          url: "{{ path }}?c=annonce&t=recherche",
+          type: "POST",
+          data: data,
+          contentType: "application/json",
+          success: function (response) {
+            $('#refreshAnnonce').html(response);          },
+          error: function (jqXHR) {
+          }
+      });   
+ });
+  
+ $('#location').click(function(e) {
+   e.preventDefault();
+    var data = JSON.stringify({
+            contrat: "location",
+            propriete: "null",
+            typeAppartement: "null",
+            surface1: "",
+            surface2: "",
+            surfaceTotal1: "",
+            surfaceTotal2: "",
+            prix1: "",
+            prix2: "",
+            piscineAnnonce: false,
+            jacuzziAnnonce: false,
+            ascenseurAnnonce: false,
+            salleDeSportAnnonce: false,
+            placeDeParkingAnnonce: false,
+    });
+      $.ajax({
+          url: "{{ path }}?c=annonce&t=recherche",
+          type: "POST",
+          data: data,
+          contentType: "application/json",
+          success: function (response) {
+            $('#refreshAnnonce').html(response);
+          },
+          error: function (jqXHR) {
+          }
+      });   
+ });  
+
+</script>
+{% endblock %}

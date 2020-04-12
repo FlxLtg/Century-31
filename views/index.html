@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+
+{% block style %}
+<link href='index.css' type='text/css' rel='stylesheet' />
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid" id="topContainer">
+  <div class="row justify-content-center" >
+    <h3 id="headerTitre">Century 31 Amiens</h3>
+  </div>
+  <div class="row justify-content-center">
+    <p id="headerText">Notre agence Century 31 AMIENS vous accompagne dans tous vos projets immobiliers</p>
+  </div>
+  <div class="row">
+    <button id="venteButton" class="btn btn-outline-secondary col-10 offset-1 col-md-3 offset-md-3">{{ nombreVente ~ ' biens à l\'achat' }}</button>
+    <button id="locationButton" class="btn btn-outline-secondary col-10 offset-1 col-md-3 offset-md-0">{{ nombreLocation ~ ' biens à la location' }}</button>
+  </div>
+</div>
+
+<!-- <div id="bandeBottomHeader"></div> -->
+
+<div class="container" id="swiperContainer">
+ <div class="row">
+   <div class="col-12"><p id="enteteSwiper">Les dernières nouveautés de l'agence</p></div>
+ </div>
+  <div class="swiper-container">
+      <div class="swiper-wrapper">
+        {% for annonce in annonces %}
+        <div class="swiper-slide">
+          <div class="card">
+            <img src="https://images.sftcdn.net/images/t_app-cover-l,f_auto/p/ce2ece60-9b32-11e6-95ab-00163ed833e7/260663710/the-test-fun-for-friends-screenshot.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">{{ annonce.titre }}</h5>
+              <p class="card-text">{{ annonce.prix ~ '€' }}</p>
+              <div class="d-flex flex-row mb-3">
+                <a href="{{ path }}?c=annonce&t=show&annonceID={{ annonce.id }}" class="btn btn-outline-secondary p-2" id="customButton">Voir l'annonce</a>
+                {% if user.role == "admin" %}
+                <a href="{{ path }}?c=annonce&t=edit&annonceID={{ annonce.id }}" class="p-2 ml-auto iconColorGreyToBlack"><i class="far fa-edit"></i></a>
+                <a href="{{ path }}?c=annonce&t=delete&annonceID={{ annonce.id }}" class="p-2 iconColorGreyToRed"><i class="far fa-trash-alt"></i></a> 
+                {% endif %} 
+                {% if user.role != "admin" %}
+                {% if annonce in user.annonces %}
+                <div class="p-2 ml-auto">
+                  <i class="like fas fa-heart" style="color: red; cursor: pointer" data-annonce-id='{{ annonce.id }}' id='{{ annonce.id }}'></i>
+                </div>
+                {% else %} 
+                <div class="p-2 ml-auto">
+                  <i class="like far fa-heart" style="cursor: pointer" data-annonce-id='{{ annonce.id }}' id='{{ annonce.id }}'></i>
+                </div>
+               {% endif %} 
+               {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="swiper-pagination"></div>
+  </div>
+</div>
+
+<div class="container" id="contentContainer">
+  <div class="row">
+    <div class="col-12">
+      <p id="pContact">Voulez-vous voir votre bien affiché ici ?<a href="{{ path }}?c=annonce&t=contact" id="pContactHref"> Contactez nous !</a></p>
+    </div>
+  </div>
+</div>
+
+  <div class="container-fluid" id="containerFooter">
+    <div class="row justify-content-center">
+      
+      <div class="col-12 col-sm-12 col-md-10 col-lg-10 col-xl-3 offset-xl-0" id="commercial">
+        <h4 id="commercialTitle">Les engagements Century 31</h4>
+        <p class="commercialText">Un accompagnement personnalisé</p>
+        <p class="commercialText">Une communication puissante</p>
+        <p class="commercialText">Des services innovants</p>
+        <p class="commercialText">Century 31, c'est une expertise depuis plus de 20 ans</p>
+        <p class="commercialText">Alors n'attendez plus ! Faites confiance à Century 31 pour vendre votre bien !</p>
+      </div>
+      
+      <div class="col-12 col-sm-12 col-md-10 col-lg-10 col-xl-3 offset-xl-0" id="horaires">
+        <div class="row">
+        <div class="col-12" id="blockLeftHoraires">
+          <h4 id="horairesTitle">Retrouvez nous en agence à ces horaires</h4>
+          <p class="jour">{#{{ 'Lundi :' ~ }}#}Lundi : 9h00 - 12h00 / 14h00 - 17h00</p>
+          <p class="jour">{#{{ 'Mardi :' ~ }}#}Mardi : 9h00 - 12h00 / 14h00 - 17h00</p>
+          <p class="jour">{#{{ 'Mercredi :' ~ }}#}Mercredi : 9h00 - 12h00 / 14h00 - 17h00</p>
+          <p class="jour">{#{{ 'Jeudi :' ~ }}#}Jeudi : 9h00 - 12h00 / 14h00 - 17h00</p>
+          <p class="jour">{#{{ 'Vendredi :' ~ }}#}Vendredi : 9h00 - 12h00 / 14h00 - 17h00</p>
+          <p class="jour">{#{{ 'Samedi :' ~ }}#}Samedi : 9h00 - 12h00</p>
+          <p class="jour">{#{{ 'Dimanche :' ~ }}#}Dimanche : fermé</p>
+        </div>
+        <div class="col-12" id="blockRightHoraires">
+        </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-sm-12 col-md-10 col-lg-10 col-xl-3 offset-xl-0" id="newsletter">
+        <h4 id="newsletterTitle">Restez connectés</h4>
+        <p>Tous les bons plans, actualités immobilières, astuces et conseils</p>
+        <form>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="button-addon2">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button" id="button-addon2">S'abonner</button>
+          </div>
+        </div>
+        <div class="custom-control custom-checkbox">
+          <input class="custom-control-input" type="checkbox" id="custom-control-label" name="newsletter" required>
+          <label class="custom-control-label" for="newsletter">Recevoir la newsletter Century 31</label>
+        </div>
+        <div class="custom-control custom-checkbox">
+          <input class="custom-control-input" type="checkbox" id="custom-control-label" name="newsletter" required>
+          <label class="custom-control-label" for="newsletter">J'accepte les <a>régles de confidentialité</a></label>
+        </div>
+        </form>
+      </div>
+      
+    </div>
+  </div>
+<div class="container-fluid" id="footer">
+  <div class="row">
+    <div class="col-12">
+     <div id="socialNetworkText">Retrouvez nous sur les reseaux sociaux !</div>
+     <div style="text-align: center;">
+     <a href="https://www.instagram.com/"><i class="fab fa-instagram fa-lg"></i></a>
+     <a href="https://www.twitter.com/"><i class="fab fa-twitter fa-lg"></i></a>
+     <a href="https://www.facebook.com/"><i class="fab fa-facebook fa-lg"></i></a>
+     <a href="https://www.snapchat.com/"><i class="fab fa-snapchat-ghost fa-lg"></i></a>
+      </div>
+    </div>
+    <div class="col-12">
+      <div id="emailFooter"><i class="far fa-envelope fa-lg"></i>felixprojetdev@gmail.com</div>
+    </div>
+    <div class="col-12">
+      <div id="telFooter"><i class="fas fa-phone-alt fa-lg"></i>03.22.64.21.34</div>
+    </div>
+  </div>
+   <div id="brandFooter"><i class="far fa-copyright"></i>Century 31 Amiens 2020</div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+ 
+  window.addEventListener('resize', swiperResize);
+  
+  swiperResize()
+
+  function swiperResize() {
+    var largeur = window.innerWidth;
+    if (largeur < 576) {
+    var swiper = new Swiper('.swiper-container', {
+        slidesPerView: 1,
+        spaceBetween: 15,
+        freeMode: false,
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+        },
+      });
+    };
+
+    if (largeur > 576 && largeur < 768) {
+    var swiper = new Swiper('.swiper-container', {
+        slidesPerView: 2,
+        spaceBetween: 30,
+        freeMode: false,
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+        },
+      });
+    }
+
+    if (largeur > 768) {
+    var swiper = new Swiper('.swiper-container', {
+        slidesPerView: 3,
+        spaceBetween: 30,
+        freeMode: false,
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+        },
+      });
+    }  
+  }
+</script>
+{% endblock %}

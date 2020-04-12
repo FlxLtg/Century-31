@@ -1,0 +1,33 @@
+.table td, .table th {
+    vertical-align: unset!important;
+  }
+
+th {
+  text-align: center!important;
+}
+
+
+
+@media (max-width: 576px) { 
+  
+  .tableResponsive {
+    display: block!important;
+    width: 100%!important;
+    overflow-x: auto!important;
+    -webkit-overflow-scrolling: touch!important;
+    -ms-overflow-style: -ms-autohiding-scrollbar!important;
+}
+  
+}
+
+@media (min-width: 576px) {
+  
+ #selectRole {
+ word-wrap: break-word;
+ min-width: 200px; 
+ max-width: 100%;
+ width: 100;
+}
+}
+
+

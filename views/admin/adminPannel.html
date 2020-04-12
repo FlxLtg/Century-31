@@ -1,0 +1,141 @@
+{% extends "base.html" %} 
+
+{% block style %}
+  <link href='adminPanel.css' type='text/css' rel='stylesheet' />
+{% endblock %}
+
+
+{% block title %}
+  <title>ADMIN PANNEL</title>
+{% endblock %}
+
+{% block body %}
+  <div class="container-fluid">
+  <div class=row>
+    <div class="col-10 offset-1 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-4 offset-lg-4 col-xl-4 offset-xl-4">
+      <br>
+        <h2 style="text-align:center">Panel Administrateur</h2>
+    </div>
+  </div>
+  </div>
+    <br>
+  
+<div class = "container-fluid">
+ <div class = "col-12 col-sm-12 col-md-12 col-lg-10 offset-lg-1 col-xl-8 offset-xl-2">
+  <div id="tableResponsive" class="table-responsive tableResponsive">
+   <table class='table table-borderless'>
+    <div class ="row">
+      
+    <thead>
+      <th>Utilisateur</th>
+      <th>Role actuel</th>
+      <th colspan="2">Changer le role</th>
+      <th>Action</th>
+    </thead>
+
+    {% for user in users %}
+    <tr>
+      <td align="center">{{ user.identifiant }}</td>
+      <td align="center">{{ user.role }}</td>
+      <td>
+        <select id="selectRole" name="role" class="newRole" data-select-for-user-id="{{ user.id }}">
+              <option value="">-- Roles disponibles --</option>
+              <option value="utilisateur">utilisateur</option>
+              <option value="admin">admin</option>
+            </select>
+      </td>
+      <td><button type="button" class="btn btn-success btn btn-block changeRoleButton" data-user-id='{{ user.id }}'><i class="far fa-check-circle"></i></button></td>
+      <td><button type="button" id="deleteUserButton" class="btn btn-danger btn btn-block deleteUser" data-user-id='{{ user.id }}'>Supprimer l'utilisateur</button></td>
+    </tr>
+    {% endfor %}
+      
+    </div>
+   </table>
+  </div>
+ </div>
+</div>
+
+{% endblock %} 
+
+
+{% block script %}
+  <script>
+   
+
+    $('.changeRoleButton').click(function() {
+      const userId = $(this).data('user-id'); // $this fais reference au boutton cliqué
+      const selectElement = $("select[data-select-for-user-id= '" + userId + "']") // selectionne le bon select en fonction de l'id du boutton cliqué (si on clique sur le bouton qui a pour id = userID = 20 alors on aura la select du userID = 20)
+      const newRole = $(selectElement.toArray()[0]).val(); // ca vas donner par exemple "admin" ou "user" le [0] permet de recuperer le premier resultat du tableau renvoyer par selectElement (car selectElement renvoie un tableau avec tout les select qui ont le meme id (ici il y en a qu'un ))
+      const data = JSON.stringify({
+        newRole: newRole
+      })
+      
+      if (const newRole = null)
+        {
+          alert('Veuillez choisir un rôle')
+        };
+
+      if (confirm('VOULEZ-VOUS VRAIMENT CHANGER LE ROLE DE CET UTILISATEUR ?')) {
+        const userID = $(this).data('user-id'); // on "cible" ici l'intutilé du data passé, c'est a dire data-user-id et non l'intérieur des parenthése qui contient "user.id"
+
+        $.ajax({
+          url: "{{ path }}?c=admin&t=changeRole&userID=" + userID,
+          type: "POST",
+          dataType: "json",
+          contentType: 'application/json',
+          data: data,
+          success: function(success) {
+            console.log('success');
+            console.log(success.status)
+            document.location.reload();
+          },
+
+          error: function(error) {
+            const newError = JSON.parse(error.responseText); // const = var / const = let / parse equivalent a un decode
+            console.log('error');
+            console.log(newError.status);
+            alert(newError.message);
+          },
+        });
+      }
+    })
+
+    $(".deleteUser").click(function() {
+
+      if (confirm('VOULEZ-VOUS SUPPRIMER CET UTILISATEUR ?')) {
+        const userID = $(this).data('user-id'); // on "cible" ici l'intutilé du data passé, c'est a dire data-user-id et non l'intérieur des parenthése qui contient "user.id"
+
+        $.ajax({
+          url: "{{ path }}?c=admin&t=deleteUser&userID=" + userID,
+          type: "POST",
+          dataType: "json",
+          contentType: 'application/json',
+          success: function(success) {
+            console.log('success');
+            console.log(success.status)
+            document.location.reload();
+          },
+
+          error: function(error) {
+            const newError = JSON.parse(error.responseText); // const = var / const = let / parse equivalent a un decode
+            console.log('error');
+            console.log(newError.status);
+            alert(newError.message);
+          },
+        });
+      }
+    })
+    
+    function handleResponsive() {
+      if ($(window).width() < 514) {
+        $('#tableResponsive').removeClass('table-responsive');
+      } else {
+        $('#tableResponsive').addClass('table-responsive');
+      }
+    }
+    
+    $(window).resize(handleResponsive)
+    
+    handleResponsive()
+  </script>
+{% endblock %}

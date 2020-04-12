@@ -1,0 +1,63 @@
+.card-body {
+  padding-bottom: 0em;
+}
+
+.iconColorGreyToRed {
+  color: #737373;
+}
+
+.iconColorGreyToRed:hover {
+  color: #ff0000;
+}
+
+.iconColorGreyToBlack {
+  color: #737373;
+}
+
+.iconColorGreyToBlack:hover {
+  color: #000000;
+}
+
+.far .fa-heart{
+  padding-bottom:0
+}
+
+.container-fluid {
+  padding: 0;
+  margin: 0;
+}
+
+.row {
+  margin: 0;
+}
+
+.col-12{
+  padding: 0;
+}
+
+.marginRight {
+ margin-right: 1px; 
+}
+
+.marginLeft {
+  margin-left: 1px;
+}
+
+.offset-2 {
+  margin-left: 5px;
+}
+
+#rechercheButton {
+  margin-top: 10px;
+}
+
+@media (max-width: 576px) {
+  .noPadding {
+    padding-right: 0px;
+    padding-left: 0px;
+  }
+}
+
+#profilForm {
+  width: 100%;
+}

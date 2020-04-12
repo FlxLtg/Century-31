@@ -1,0 +1,96 @@
+{% extends "base.html" %} 
+
+{% block title %}
+  <title>Inscription</title>
+{% endblock %}
+
+{% block body %}
+       <br>
+       <h1 style="text-align:center">Inscription </h1>
+       <br>
+       <br>
+       <br>
+       <br>
+      
+    <form id ="inscriptionForm">
+      
+      <div class = "container">
+        <div class = "row">
+          <div class = "col-10 offset-1 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-4 offset-lg-4 col-xl-4 offset-xl-4">
+
+      <div class = form-group>
+          <label for = "identifiant">Identifiant :</label>
+          <input class = form-control type = "text" id="identifiant" name="identifiant" placeholder="Identifiant" required>
+      </div>
+      
+      <div class = form-group>
+          <label for = "motDePasse">Mot de passe :</label>
+          <input class = form-control type = "password" id = "motDePasse" name = "motDePasse" placeholder="Mot de passe" required>
+      </div>
+      
+      <div class = form-group>
+          <label for = "motDePasseVerif">Saisissez de nouveau le mot de passe :</label>
+          <input class = form-control type = "password" id = "motDePasseVerif" name = "motDePasseVerif" placeholder="Mot de passe" required>
+      </div>
+        
+      <div class = form-group>
+          <label for = "email">email :</label>
+          <input class = form-control type = "text" id = "email" name = "email" placeholder="Email" required>
+        
+        <div id="msgStatus" class="hidden" style="text-align:center"></div>
+      </div>
+        
+          <button type="button" id="inscriptionButton" class="btn btn-secondary btn btn-block">S'inscrire</button> <!--la class du button permet de le caler sur la largeur des parents, ici les input mdp et identifiant -->
+     
+<!--       <div id="msgSubmit" class = "hidden" style="text-align:center">Inscription validée!</div> -->
+          </div>
+        </div>
+      </div>
+      
+      </form>
+      
+{% endblock %}
+
+{% block script %}
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+      <script>
+        
+        $("#inscriptionButton").click(function() { //fonction qui test si l'email est deja utilisé, si c'est le cas -> success = compte créer / error = email deja utilisé.
+          
+          var identifiant = $("#identifiant").val();
+          var motDePasse = $("#motDePasse").val();                         
+          var motDePasseVerif = $("#motDePasseVerif").val();  
+          var email = $("#email").val();
+          var data=JSON.stringify({
+                    identifiant: identifiant,
+                    motDePasse: motDePasse,
+                    motDePasseVerif : motDePasseVerif,
+                    email : email,
+                  });
+                    
+        $.ajax ({
+                    url : "{{ path }}?c=user&t=inscriptionValid", // url du controleur (avec fonction) qui va executer le code
+                    type : "POST", // methode post ou get 
+                    dataType: "json",
+                    contentType: 'application/json',
+                    data : data,
+                    success : function(response) {
+                                $("#msgStatus").html(response.message); // methode html remplace le contenu de l'element selectionné par l'id
+                                $("#msgStatus").css( 'display', "block" ); // affiche la div #msgStatus
+                                setTimeout(function(){location.href="http://195.154.118.169/felix/sitevitrine/?c=user&t=connexion"} , 5000);
+                              },
+                    error : function(jqXHR, textStatus, errorThrown) {
+                      const error = JSON.parse(jqXHR.responseText); // const = var / const = let / parse equivalent a un decode
+                      console.log(textStatus);
+                      console.log(jqXHR);
+                      console.log(jqXHR.status);
+                      console.log(jqXHR.responseText);
+                      console.log(errorThrown);
+                      console.log(newError.message);
+                              $("#msgStatus").html(error.message); // methode html remplace le contenu de l'element selectionné par l'id
+                              $("#msgStatus").css( 'display', "block" ); // affiche la div #msgStatus
+                            }, 
+                 });
+        })
+       </script>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "base1.html" %}
+
+{% block title %}
+  <title>Creer une annonce</title>
+{% endblock %}
+
+
+
+
+{% block body %}
+<h1>
+    Test
+</h1>
+ <form action="?c=annonce&t=test2" method="post" enctype="multipart/form-data">>
+
+          <!-- MAX_FILE_SIZE doit précéder le champ input de type file -->
+          <!-- Le nom de l'élément input détermine le nom dans le tableau $_FILES -->
+<!--           <label for="file" class="label-file">Choisir une image</label>
+          <input class="inputfile" type="file" name="image[]" multiple="multiple" /> -->
+            <div class="custom-file">
+              <input type="file" class="custom-file-input" id="inputGroupFile01" name="image">
+            </div>
+            <br>
+            <br>
+             <div style="text-align:center; color:red" id="preview">
+              <p>Aucun fichier sélectionné pour le moment</p>
+             </div>
+
+ 
+ 
+          <br>
+          <br>
+          <button type="submit" name="submit" id="newAnnonceButton" class="btn btn-secondary btn btn-block">Ajouter l'annonce</button>
+          <br>
+          <br>
+            
+  </form>
+
+{% endblock %}
+

@@ -1,0 +1,75 @@
+{% extends "base.html" %} 
+
+{% block title %}
+  <title>Connexion</title>
+{% endblock %}
+
+{% block body %}
+      <br>
+        <h1 style="text-align:center"> Connexion </h1>
+      <br>
+      <br>
+      <br>
+      <br>
+    <form id = "connexionForm" class ="">
+  
+      <div class = "container">
+       <div class = "row">
+         <div class = "col-10 offset-1 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-4 offset-lg-4 col-xl-4 offset-xl-4">
+           
+        <div class = form-group>
+          <label for = "identifiant">Identifiant :</label>
+          <input class = form-control type = "text" id="identifiant" name="identifiant" placeholder = "Identifiant" required>
+        </div>
+      
+         <div class = form-group>
+          <label for = "motDePasse">Mot de passe :</label>
+          <input class = "form-control" type = "password" id = "motDePasse" name = "motDePasse" placeholder = "Mot de passe" required>
+         </div>
+
+         <div id="infosFalse" class="hidden" style="text-align:center"></div>
+          <br>
+         <div>
+          <button type="button" id="connexionButton" class="btn btn-secondary btn btn-block">Se connecter</button> <!--la class du button permet de le caler sur la largeur des parents, ici les input mdp et identifiant -->
+         </div>
+         </div>
+        </div>
+      </div>
+         
+      </form>
+{% endblock %}
+
+{% block script %}
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+      <script>
+                
+              $("#connexionButton").click(function() {
+                var identifiant = $("#identifiant").val();
+                var motDePasse = $("#motDePasse").val();       
+                var data=JSON.stringify({
+                    identifiant: identifiant,
+                    motDePasse: motDePasse
+                  });
+                
+              $.ajax ({
+                  url : "{{ path }}?c=user&t=connexionValid",
+                  type : "POST", 
+                  dataType: "json",
+                  contentType: 'application/json',
+                  data : data,
+                  success : function(success) {
+                    console.log(success.status)
+                    document.location.href="{{ path }}?c=annonce&t=index"; 
+                  },
+                  error : function(jqXHR, textStatus, errorThrown) {
+//                     console.log(error)
+                    const error = JSON.parse(jqXHR.responseText);
+                    $("#infosFalse").html(error.message); // methode html remplace le contenu de l'element selectionné par l'id
+                    $( "#infosFalse" ).css( 'display', "block" ); // affiche la div #infosFalse
+                    console.log(newError.status);
+                    
+                  },
+               });
+      })  
+      </script>
+{% endblock %}

@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Modifier une annonce</title>
+{% endblock %}
+
+{% block body %} 
+
+      
+      <br>
+      <h1 style="text-align:center"> Modifier une annonce </h1>
+      <br>
+      
+      <form action="{{ path }}?c=annonce&t=edited&id={{ annonce.id }}" method="post">
+
+  <div class="container-fluid">
+   <!--   <div class="row"> -->
+        <div class="col-12 col-sm-10 offset-sm-1 col-md-10 offset-md-1 col-lg-10 offset-lg-1 col-xl-8 offset-xl-2">
+          
+         <div class=form-row>
+          <div class="form-group col">
+            <label for="titre">Titre de l'annonce :</label>
+            <input class=form-control type="text" id="titre" name="titre_annonce" placeholder="Titre de l'annonce" value= {{annonce.titre}} required>
+          </div> 
+         </div>
+
+         <div class=form-row>
+          <div class="form-group col">
+            <label for="description">Description de l'annonce :</label>
+            <textarea class=form-control id="libelle" name="description_annonce" placeholder="Description de l'annonce" value= {{annonce.description}} required></textarea>
+          </div>
+         </div>  
+         
+         <div class=form-row>
+          <div class="form-group col-12 col-lg-6">
+            <label for="surface">Surface de l'habitation :</label>
+            <input class=form-control id="surface" name="surface_annonce" placeholder="Surface de l'habitation" value= {{annonce.surface}} required>
+          </div>
+
+          <div class="form-group col-12 col-lg-6">
+            <label for="surface_total">Surface totale :</label>
+            <input class=form-control id="surface_total" name="surface_total_annonce" placeholder="Surface totale" value= {{annonce.surface_total}} required>
+          </div>
+         </div>
+          
+         <div class=form-row>
+          <div class="form-group col-12 col-lg-12">
+            <label for="Date">Date à partir de laquelle le bien est disponible :</label>
+            <input class=form-control type="date" name="date_dispo_annonce" id="date" value = "{{ tache.date | date ('Y-m-d') }}" required>
+          </div>
+         </div>
+          
+          <div class=form-row>
+          <div class="form-group col-12 col-lg-6">
+            <label for="type_propriete">Type de propriété :</label>
+              <select class=form-control name="type_propriete" required>
+                <option selected>{{annonce.type_propriete}}</option>
+                <option value ="appartement">Appartement</option> 
+                <option value ="maison">Maison</option> 
+                <option value ="villa">Villa</option> 
+                <option value ="hotel">Hotel</option> 
+                <option value ="bungalow">Bungalow</option> 
+                <option value ="complexe">Complexe</option> 
+                <option value ="cabane">Cabane</option> 
+                <option value ="chalet">Chalet</option> 
+                <option value ="chateau">Chateau</option> 
+              </select>
+          </div>
+
+          <div class="form-group col-12 col-lg-6">
+            <label for="type_contrat">Type de contrat :</label>
+              <select class=form-control name="type_contrat">
+                <option selected>{{annonce.type_contrat}}</option>
+                <option value ="vente">Vente</option> 
+                <option value ="location">Location</option>  
+              </select>
+          </div>
+          </div>
+
+            <!--         SI APPARTEMENT CHOISI        -->
+          <div hidden>
+          <div class=form-row>
+          <div class="form-group col-12 col-lg-4">
+            <label for="type_annonce_appartement">Type d'appartement :</label>
+              <select class=form-control name="type_annonce_appartement">
+                <option value= null selected>{{annonce.type_appartement}}</option>
+                <option value ="studio">Studio</option> 
+                <option value ="loft">Loft</option> 
+                <option value ="duplex">Duplex</option> 
+                <option value ="souplex">Souplex</option> 
+              </select>
+          </div>
+              
+                
+          <div class="form-group col-12 col-lg-4">
+            <label for="ameublement_annonce">Ameublement :</label>
+              <select class=form-control name="ameublement_annonce">
+                <option value= null selected>{{annonce.ameublement}}</option>
+                <option value ="studio">Meublé</option> 
+                <option value ="loft">Non-meublé</option>  
+              </select>
+          </div>
+          </div>
+          </div>
+
+              <!--         FIN DE CHOX SI APPARTEMENT CHOISI -->
+
+          <div class=form-row>
+          <div class="form-group col-12 col-lg-6">
+            <label for="etage_annonce">Etage :</label>
+            <!-- UTILISER POUR ETAGE DE L'APPARTEMENT ET CMB D'ETAGES DANS LA MAISON -->
+            <input class=form-control id="etage_annonce" name="etage_annonce" placeholder="Etage - indiquer 0 pour le rez de chaussée" value = {{annonce.etage}} required>
+          </div>
+
+          <div class="form-group col-12 col-lg-6">
+            <label for="nombre_pieces_annonce">Nombre de pieces :</label>
+            <input class=form-control id="nombre_pieces_annonce" name="nombre_pieces_annonce" placeholder="Nombre de pieces" value = {{annonce.nombre_pieces}} required>
+          </div>
+          </div>
+          
+          <div class=form-row>
+          <div class="form-group col-12 col-lg-4">
+            <label for="nombre_salle_bain_annonce">Nombre de salle de bain :</label>
+            <input class=form-control id="nombre_salle_bain_annonce" name="nombre_salle_bain_annonce" placeholder="Nombre de salle de bain" value = {{annonce.nombre_salle_bain}} required>
+          </div>
+    
+          <div class="form-group col-12 col-lg-4">
+            <label for="nombre_salle_eau_annonce">Nombre de salle d'eau :</label>
+            <input class=form-control id="nombre_salle_eau_annonce" name="nombre_salle_eau_annonce" placeholder="Nombre de salle d'eau" value = {{annonce.nombre_salle_eau}} required>
+          </div>
+                  
+          <div class="form-group col-12 col-lg-4">
+            <label for="nombre_chambre_annonce">Nombre de chambre :</label>
+            <input class=form-control id="nombre_chambre_annonce" name="nombre_chambre_annonce" placeholder="Nombre de pieces" value = {{annonce.nombre_chambre}} required>
+          </div> 
+          </div>
+
+          <p>Installation(s) :</p>
+          <div class="custom-control custom-checkbox checkbox_horizontal">
+            <input class="custom-control-input" type="checkbox" id="piscine_annonce" name="piscine_annonce">
+            <label class="custom-control-label" for="piscine_annonce">Piscine</label>
+          </div>
+          <div class="custom-control custom-checkbox checkbox_horizontal">
+            <input class="custom-control-input" type="checkbox" id="jacuzzi_annonce" name="jacuzzi_annonce">
+            <label class="custom-control-label" for="jacuzzi_annonce">Jacuzzi</label>
+          </div>
+          <div class="custom-control custom-checkbox checkbox_horizontal">
+            <input class="custom-control-input" type="checkbox" id="ascenseur_annonce" name="ascenseur_annonce">
+            <label class="custom-control-label" for="ascenseur_annonce">Ascenseur</label>
+          </div>
+          <div class="custom-control custom-checkbox checkbox_horizontal">
+            <input class="custom-control-input" type="checkbox" id="salle_de_sport_annonce" name="salle_de_sport_annonce">
+            <label class="custom-control-label" for="salle_de_sport_annonce">Salle de sport</label>
+          </div>
+          <div class="custom-control custom-checkbox checkbox_horizontal">
+            <input class="custom-control-input" type="checkbox" id="place_de_parking_annonce" name="place_de_parking_annonce">
+            <label class="custom-control-label" for="place_de_parking_annonce">Place de parking</label>
+          </div>
+
+          <br>
+          <br>
+          <button type="submit" id="newAnnonceButton" class="btn btn-secondary btn btn-block">Ajouter l'annonce</button>
+          <br>
+          <br>
+              </div>
+            </div>
+          </div>
+
+  </form>
+{% endblock %}
