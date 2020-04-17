@@ -78,12 +78,14 @@ class AnnonceController extends Controller
  {
    $annonce = $request->getEm()->getRepository('Entity\Annonce')->find($_GET['annonceID']);
    $images = $annonce->getImage();
+   $imageFirst = $annonce->getImage([0]);
    $user = $request->getUser();
    echo $this->twig->render('annonce.html',
                            [
                              "annonce" => $annonce,
                              "images" => $images,
                              'user' => $user,
+                             'imageFirst' => $imageFirst,
                            ]);
  }
   
@@ -143,6 +145,26 @@ class AnnonceController extends Controller
            list($fileNameWithoutExtension, $fileExtension) = explode(".", $fileName); // permet de séparer fileName en deux et de dissocier le nom de l'extension.
            $fileActualExtension = strtolower($fileExtension);
            $fileExtensionAllowed = ['jpg', 'jpeg', 'png'];
+             
+          $maxDim = 1400;
+          list($width, $height, $type, $attr) = getimagesize($fileTmpName);
+          if ($width > $maxDim || $height > $maxDim) {
+              $target_filename = $fileTmpName;
+              $ratio = $width/$height;
+              if($ratio > 1) {
+                  $new_width = $maxDim;
+                  $new_height = $maxDim/$ratio;
+              } else {
+                  $new_width = $maxDim*$ratio;
+                  $new_height = $maxDim;
+              }
+              $src = imagecreatefromstring(file_get_contents($fileTmpName));
+              $dst = imagecreatetruecolor($new_width, $new_height);
+              imagecopyresampled($dst, $src, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
+              imagedestroy($src);
+              imagepng($dst, $target_filename); // adjust format as needed
+              imagedestroy($dst);
+          }
              
             if (is_uploaded_file($fileTmpName)) {
               
