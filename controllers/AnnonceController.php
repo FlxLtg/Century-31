@@ -32,7 +32,7 @@ class AnnonceController extends Controller
    $query = $qb->getQuery();
    $lastAnnonces = $query->getResult();
    
-  $em = $request->GetEm(); // CETTE REQUETE PERMET D'OBTENIR UNIQUEMENT ET DYNAMIQUEMENT LE NOMBRE DE PAGE POUR LA NAVBAR DEDIE
+  $em = $request->GetEm(); // CETTE REQUETE PERMET D'OBTENIR DYNAMIQUEMENT LE NOMBRE DE PAGE POUR LA NAVBAR DEDIE
   $qb = $em->createQueryBuilder();  
   $qb->select('a')
      ->from('Entity\Annonce', 'a')
@@ -43,7 +43,7 @@ class AnnonceController extends Controller
   $annoncesLocation = $query->getResult();
   $nombreLocation = count($annoncesLocation); 
   
-  $em = $request->GetEm(); // CETTE REQUETE PERMET D'OBTENIR UNIQUEMENT ET DYNAMIQUEMENT LE NOMBRE DE PAGE POUR LA NAVBAR DEDIE
+  $em = $request->GetEm(); // CETTE REQUETE PERMET D'OBTENIR DYNAMIQUEMENT LE NOMBRE DE PAGE POUR LA NAVBAR DEDIE
   $qb = $em->createQueryBuilder();  
   $qb->select('a')
      ->from('Entity\Annonce', 'a')
@@ -344,6 +344,9 @@ public function recherche($request)
     elseif ($value == "true"){
       $value = "1";
     }
+    elseif ($value == "") {
+      $value = null;
+    }
   $newData[$key] = $value;
   };
   
@@ -357,10 +360,9 @@ public function recherche($request)
   {
      $pageActuelle = 1;  
   }
-  
+
   $limit = $pageActuelle * $annoncesParPage;
   $offset = $limit - $annoncesParPage; 
-  
   $em = $request->GetEm(); // CETTE REQUETE PERMET D'OBTENIR UNIQUEMENT ET DYNAMIQUEMENT LE NOMBRE DE PAGE POUR LA NAVBAR DEDIE
   $qb = $em->createQueryBuilder();  
   $qb->select('a')
@@ -371,49 +373,55 @@ public function recherche($request)
         ->setParameter(1, $newData['contrat']);
     }
     if ($newData['propriete'] != "null") {
-     $qb->andwhere('a.type_propriete = ?2')
+     $qb->andWhere('a.type_propriete = ?2')
         ->setParameter(2, $newData['propriete']);
     }
     if ($newData['typeAppartement'] != "null") {
-     $qb->andwhere('a.type_appartement = ?3')
+     $qb->andWhere('a.type_appartement = ?3')
         ->setParameter(3, $newData['typeAppartement']);
     }
-    if ($newData['surface1'] != "" and $newData['surface2'] != "") {
-     $qb->andwhere('a.surface >= ?4 and a.surface <= ?5')
-        ->setParameters(array(4 => $newData['surface1'],
-                              5 => $newData['surface2']
-                             ));
-    }
-    if ($newData['surfaceTotal1'] != "" and $newData['surfaceTotal2'] != "") {
-     $qb->andwhere('a.surface_total >= ?6 and a.surface_total <= ?7')
-        ->setParameters(array(6 => $newData['surface1'],
-                              7 => $newData['surface2']
-                             ));
-    }
-    if ($newData['prix1'] != "" and $newData['prix2'] != "") {
-     $qb->andwhere('a.prix >= ?8 and a.prix <= ?9')
-        ->setParameters(array(8 => $newData['prix1'],
-                              9 => $newData['prix2']
-                             ));
+    if ($newData['surface1'] != null) {
+     $qb->andWhere('a.surface >= ?4') 
+        ->setParameter(4, $newData['surface1']);
     }  
+    if ($newData['surface2'] != null) {
+     $qb->andWhere('a.surface <= ?5')
+        ->setParameter(5, $newData['surface2']);
+    }  
+    if ($newData['surfaceTotal1'] != null) {
+     $qb->andWhere('a.surface_total >= ?6') 
+        ->setParameter(6, $newData['surfaceTotal1']);
+    }  
+    if ($newData['surfaceTotal2'] != null) {
+     $qb->andWhere('a.surface_total <= ?7')
+        ->setParameter(7, $newData['surfaceTotal2']);
+    }
+    if ($newData['prix1'] != null) {
+     $qb->andWhere('a.prix >= ?8') 
+        ->setParameter(8, $newData['prix1']);
+    }  
+    if ($newData['prix2'] != null) {
+     $qb->andWhere('a.prix <= ?9')
+        ->setParameter(9, $newData['prix2']);
+    }
     if ($newData['piscineAnnonce'] != "") {
-     $qb->andwhere('a.piscine = ?10')
+     $qb->andWhere('a.piscine = ?10')
         ->setParameter(10, $newData['piscineAnnonce']);
     }
     if ($newData['jacuzziAnnonce'] != "") {
-     $qb->andwhere('a.jacuzzi = ?11')
+     $qb->andWhere('a.jacuzzi = ?11')
         ->setParameter(11, $newData['jacuzziAnnonce']);
     }
     if ($newData['ascenseurAnnonce'] != "") {
-     $qb->andwhere('a.ascenseur = ?12')
+     $qb->andWhere('a.ascenseur = ?12')
         ->setParameter(12, $newData['ascenseurAnnonce']);
     }
     if ($newData['salleDeSportAnnonce'] != "") {
-     $qb->andwhere('a.salle_sport = ?13')
+     $qb->andWhere('a.salle_sport = ?13')
         ->setParameter(13, $newData['salleDeSportAnnonce']);
     }
     if ($newData['placeDeParkingAnnonce'] != "") {
-     $qb->andwhere('a.place_parking = ?14')
+     $qb->andWhere('a.place_parking = ?14')
         ->setParameter(14, $newData['placeDeParkingAnnonce']);
     }
   
@@ -422,7 +430,7 @@ public function recherche($request)
   
   $annoncesNombre = count($annonces);
   $pagesTotal = ceil(($annoncesNombre / $annoncesParPage)); // NE DOIT PAS ETRE FIXE ! ICI TOUJOURS 4 PAGES -> FAUX ! DOIT SE BASER SUR LE NOMBRE D'ANNONCES DU RESULTAT DE LA REQUETE  
-  
+
   $em = $request->GetEm(); // CETTE REQUETE RENVOIE LES 12 ANNONCES A AFFICHE EN FONCTION DE LA PAGE CHOISIE
   $qb = $em->createQueryBuilder();  
   $qb->select('a')
@@ -435,49 +443,55 @@ public function recherche($request)
         ->setParameter(1, $newData['contrat']);
     }
     if ($newData['propriete'] != "null") {
-     $qb->andwhere('a.type_propriete = ?2')
+     $qb->andWhere('a.type_propriete = ?2')
         ->setParameter(2, $newData['propriete']);
     }
     if ($newData['typeAppartement'] != "null") {
-     $qb->andwhere('a.type_appartement = ?3')
+     $qb->andWhere('a.type_appartement = ?3')
         ->setParameter(3, $newData['typeAppartement']);
     }
-    if ($newData['surface1'] != "" and $newData['surface2'] != "") {
-     $qb->andwhere('a.surface >= ?4 and a.surface <= ?5')
-        ->setParameters(array(4 => $newData['surface1'],
-                              5 => $newData['surface2']
-                             ));
+    if ($newData['surface1'] != null) {
+     $qb->andWhere('a.surface >= ?4') 
+        ->setParameter(4, $newData['surface1']);
+    }  
+    if ($newData['surface2'] != null) {
+     $qb->andWhere('a.surface <= ?5')
+        ->setParameter(5, $newData['surface2']);
+    }  
+    if ($newData['surfaceTotal1'] != null) {
+     $qb->andWhere('a.surface_total >= ?6') 
+        ->setParameter(6, $newData['surfaceTotal1']);
+    }  
+    if ($newData['surfaceTotal2'] != null) {
+     $qb->andWhere('a.surface_total <= ?7')
+        ->setParameter(7, $newData['surfaceTotal2']);
     }
-    if ($newData['surfaceTotal1'] != "" and $newData['surfaceTotal2'] != "") {
-     $qb->andwhere('a.surface_total >= ?6 and a.surface_total <= ?7')
-        ->setParameters(array(6 => $newData['surface1'],
-                              7 => $newData['surface2']
-                             ));
-    }
-    if ($newData['prix1'] != "" and $newData['prix2'] != "") {
-     $qb->andwhere('a.prix >= ?8 and a.prix <= ?9')
-        ->setParameters(array(8 => $newData['prix1'],
-                              9 => $newData['prix2']
-                             ));
+    if ($newData['prix1'] != null) {
+     $qb->andWhere('a.prix >= ?8') 
+        ->setParameter(8, $newData['prix1']);
+    }  
+    if ($newData['prix2'] != null) {
+     $qb->andWhere('a.prix <= ?9')
+        ->setParameter(9, $newData['prix2']);
     }  
     if ($newData['piscineAnnonce'] != "") {
-     $qb->andwhere('a.piscine = ?10')
+     $qb->andWhere('a.piscine = ?10')
         ->setParameter(10, $newData['piscineAnnonce']);
     }
     if ($newData['jacuzziAnnonce'] != "") {
-     $qb->andwhere('a.jacuzzi = ?11')
+     $qb->andWhere('a.jacuzzi = ?11')
         ->setParameter(11, $newData['jacuzziAnnonce']);
     }
     if ($newData['ascenseurAnnonce'] != "") {
-     $qb->andwhere('a.ascenseur = ?12')
+     $qb->andWhere('a.ascenseur = ?12')
         ->setParameter(12, $newData['ascenseurAnnonce']);
     }
     if ($newData['salleDeSportAnnonce'] != "") {
-     $qb->andwhere('a.salle_sport = ?13')
+     $qb->andWhere('a.salle_sport = ?13')
         ->setParameter(13, $newData['salleDeSportAnnonce']);
     }
     if ($newData['placeDeParkingAnnonce'] != "") {
-     $qb->andwhere('a.place_parking = ?14')
+     $qb->andWhere('a.place_parking = ?14')
         ->setParameter(14, $newData['placeDeParkingAnnonce']);
     }
   
@@ -501,6 +515,37 @@ public function recherche($request)
     echo $this->twig->render('infosPerso.html', [
       'user' => $user
     ]);
+  }
+  
+  public function rechercheFromHome($request)
+  {
+    
+    $typeContrat = $_GET["recherche"];
+    
+    $annoncesParPage = 12;
+  
+    if(isset($_GET['page']) and $_GET['page'] != 0) 
+    {
+       $pageActuelle = intval($_GET['page']);
+    }
+    else // dans le cas ou le localStorage('page') n'est pas définit ou égal a 0
+    {
+       $pageActuelle = 1;  
+    }
+
+    $limit = $pageActuelle * $annoncesParPage;
+    $offset = $limit - $annoncesParPage;
+    
+    $em = $request->GetEm(); // CETTE REQUETE RENVOIE LES 12 ANNONCES A AFFICHE EN FONCTION DE LA PAGE CHOISIE
+    $qb = $em->createQueryBuilder();  
+    $qb->select('a')
+       ->from('Entity\Annonce', 'a')
+       ->orderBy('a.id', 'DESC')
+       ->where('a.type_contrat = ?1') 
+       ->setParameter(1, $typeContrat)
+       ->setFirstResult($offset)
+       ->setMaxResults($limit);
+    
   }
   
   

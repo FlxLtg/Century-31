@@ -225,7 +225,6 @@
             contentType: "application/json",
             success: function ($response) {
                 $('#refreshAnnonce').html($response)
-              console.log("success");
             },
             error: function ($xhr) {
             }
@@ -253,8 +252,7 @@
   
  });
   
- $('#achat').click(function(e) {
-   e.preventDefault();
+  function rechercheVente() {
     var data = JSON.stringify({
             contrat: "vente",
             propriete: "null",
@@ -280,11 +278,15 @@
             $('#refreshAnnonce').html(response);          },
           error: function (jqXHR) {
           }
-      });   
+      });  
+  };
+  
+ $('#achat').click(function(e) {
+   e.preventDefault();
+   rechercheVente()
  });
   
- $('#location').click(function(e) {
-   e.preventDefault();
+  function rechercheLocation() {
     var data = JSON.stringify({
             contrat: "location",
             propriete: "null",
@@ -311,7 +313,12 @@
           },
           error: function (jqXHR) {
           }
-      });   
+      });
+  };
+  
+ $('#location').click(function(e) {
+   e.preventDefault();
+   rechercheLocation()
  });  
 
 </script>
