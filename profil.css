@@ -80,3 +80,78 @@
     display: none;
   }
 }
+
+#footer {
+  height: 250px;
+  background-color: #d9d9d9;
+  margin-top: 45px;
+  padding: 40px;
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  margin-bottom: 0px;
+}
+
+#brandFooter {
+  font-weight: 100; 
+  text-align: center;
+}
+
+.fa-copyright {
+  margin-right: 3px;
+}
+
+#emailFooter {
+  margin-bottom: 20px;
+  margin-top: 30px;
+  font-weight: 500; 
+  text-align: center;
+}
+
+#telFooter {
+  margin-bottom: 20px; 
+  margin-top: 0px;
+  font-weight: 500; 
+  text-align: center;
+}
+
+#socialNetworkText {
+  font-weight: 500;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.fa-envelope {
+  margin-right: 10px;
+  text-decoration: none;
+}
+
+.fa-phone-alt {
+  margin-right: 10px;
+  text-decoration: none;
+}
+
+.fa-instagram {
+  margin-right: 10px;
+  text-decoration: none;
+  color: black;
+}
+
+.fa-twitter {
+  margin-right: 10px;
+  text-decoration: none;
+  color: black;
+}
+
+.fa-facebook {
+  margin-right: 10px;
+  text-decoration: none;
+  color: black;
+}
+
+.fa-snapchat-ghost {
+  margin-right: 10px;
+  text-decoration: none;
+  color: black;
+}

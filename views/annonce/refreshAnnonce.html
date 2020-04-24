@@ -33,19 +33,9 @@
 
     <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
             {% for page in range(1, pages) %}
             <li class="page-item"><a class="page-link" data-page-id="{{ page }}">{{ page }}</a></li>
             {% endfor %}
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
         </ul>
     </nav>
 
@@ -80,7 +70,7 @@ $(".like").click(function() {
 $(".page-link").click(function() {
     const page = $(this).data('page-id');
     localStorage.setItem('page', page);  
-    rechercheAnnonce(page)
+    rechercheAnnonce()
     document.body.scrollTop = 0; // For Safari
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
   });

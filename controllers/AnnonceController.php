@@ -429,8 +429,10 @@ public function recherche($request)
   $annonces = $query->getResult();
   
   $annoncesNombre = count($annonces);
-  $pagesTotal = ceil(($annoncesNombre / $annoncesParPage)); // NE DOIT PAS ETRE FIXE ! ICI TOUJOURS 4 PAGES -> FAUX ! DOIT SE BASER SUR LE NOMBRE D'ANNONCES DU RESULTAT DE LA REQUETE  
-
+  $pagesTotal = ceil(($annoncesNombre / $annoncesParPage)); 
+  var_dump($pagesTotal);
+  var_dump($annoncesNombre);
+  var_dump($annoncesParPage);
   $em = $request->GetEm(); // CETTE REQUETE RENVOIE LES 12 ANNONCES A AFFICHE EN FONCTION DE LA PAGE CHOISIE
   $qb = $em->createQueryBuilder();  
   $qb->select('a')
@@ -494,10 +496,11 @@ public function recherche($request)
      $qb->andWhere('a.place_parking = ?14')
         ->setParameter(14, $newData['placeDeParkingAnnonce']);
     }
-  
+  var_dump($offset);
+  var_dump($limit);
   $query = $qb->getQuery();
   $annonces = $query->getResult(); ///////////// CETTE VARIABLE QUI DOIT ETRE TESTER EN TANT QUE NOMBRE MAX D'ANNONCES, PAS LE FINDALL !!!
-  
+  var_dump(count($annonces));
   if ($annonces) {
     http_response_code(200);
     echo $this->twig->render('refreshAnnonce.html',

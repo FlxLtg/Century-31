@@ -9,7 +9,8 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script src="https://kit.fontawesome.com/1804e69ab6.js" crossorigin="anonymous"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, shrink-to-fit=no">
-  {% block style %}{% endblock %}
+  {% block style %}
+  {% endblock %}
   {% block title %}
   <title>Home</title>
   {% endblock %}
@@ -81,6 +82,29 @@
 {% endblock %}  
   {% block body %}
   {% endblock %}
+
+{% block footer %}
+  <div class="container-fluid" id="footer">
+  <div class="row">
+    <div class="col-12">
+     <div id="socialNetworkText">Retrouvez nous sur les reseaux sociaux !</div>
+     <div style="text-align: center;">
+     <a href="https://www.instagram.com/"><i class="fab fa-instagram fa-lg"></i></a>
+     <a href="https://www.twitter.com/"><i class="fab fa-twitter fa-lg"></i></a>
+     <a href="https://www.facebook.com/"><i class="fab fa-facebook fa-lg"></i></a>
+     <a href="https://www.snapchat.com/"><i class="fab fa-snapchat-ghost fa-lg"></i></a>
+      </div>
+    </div>
+    <div class="col-12">
+      <div id="emailFooter"><i class="far fa-envelope fa-lg"></i>felixprojetdev@gmail.com</div>
+    </div>
+    <div class="col-12">
+      <div id="telFooter"><i class="fas fa-phone-alt fa-lg"></i>03.22.64.21.34</div>
+    </div>
+  </div>
+   <div id="brandFooter"><i class="far fa-copyright"></i>Century 31 Amiens 2020</div>
+</div>
+{% endblock %}
    
   </body>
 </html>
