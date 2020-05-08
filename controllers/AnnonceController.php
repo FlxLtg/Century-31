@@ -6,6 +6,7 @@ use Entity\Annonce;
 use Entity\Request;
 use Entity\Image;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 
 require 'email.php';
@@ -31,6 +32,8 @@ class AnnonceController extends Controller
    
    $query = $qb->getQuery();
    $lastAnnonces = $query->getResult();
+   $paginator = new Paginator($query, $fetchJoinCollection = true);
+   
    
   $em = $request->GetEm(); // CETTE REQUETE PERMET D'OBTENIR DYNAMIQUEMENT LE NOMBRE DE PAGE POUR LA NAVBAR DEDIE
   $qb = $em->createQueryBuilder();  
@@ -42,6 +45,7 @@ class AnnonceController extends Controller
   $query = $qb->getQuery();
   $annoncesLocation = $query->getResult();
   $nombreLocation = count($annoncesLocation); 
+  $paginator = new Paginator($query, $fetchJoinCollection = true);
   
   $em = $request->GetEm(); // CETTE REQUETE PERMET D'OBTENIR DYNAMIQUEMENT LE NOMBRE DE PAGE POUR LA NAVBAR DEDIE
   $qb = $em->createQueryBuilder();  
@@ -53,7 +57,8 @@ class AnnonceController extends Controller
   $query = $qb->getQuery();
   $annoncesVente = $query->getResult();
   $nombreVente = count($annoncesVente);
-   
+  $paginator = new Paginator($query, $fetchJoinCollection = true);
+ 
    
    echo $this->twig->render('index.html', [
      "annonces" => $lastAnnonces,
@@ -66,6 +71,11 @@ class AnnonceController extends Controller
  public function list($request)
  {
   $user = $request->getUser();   
+   
+//   if (isset($_GET['recherche'] == "location")) {
+    
+//   }
+   
   echo $this->twig->render('listAnnonce.html', 
       [
         "user" => $user,
@@ -112,7 +122,7 @@ class AnnonceController extends Controller
         $annonce->setDescription($_POST['description_annonce']);
         $annonce->setSurface($_POST['surface_annonce']);
         $annonce->setSurfaceTotal($_POST['surface_total_annonce']);
-        $annonce->setDateDisponible($_POST['date_dispo_annonce']);
+        $annonce->setDateDisponible($_POST['date_dispo_annonce']); //// a supprimer car doublon
         $annonce->setTypePropriete($_POST['type_propriete']);
         $annonce->setTypeContrat($_POST['type_contrat']);
         $annonce->setTypeAppartement(isset($_POST['type_annonce_appartement']));
@@ -352,7 +362,7 @@ public function recherche($request)
   
   $annoncesParPage = 12;
   
-  if(isset($_GET['page']) and $_GET['page'] != 0) 
+  if(isset($_GET['page']) and $_GET['page'] != 0) // on recupere par $_GET['page'] car dans l'appel ajax on recupere la valeur dans local.storage pour la placé dans l'url
   {
      $pageActuelle = intval($_GET['page']);
   }
@@ -361,8 +371,8 @@ public function recherche($request)
      $pageActuelle = 1;  
   }
 
-  $limit = $pageActuelle * $annoncesParPage;
-  $offset = $limit - $annoncesParPage; 
+  $limit = $annoncesParPage;
+  $offset = ($pageActuelle-1) * $annoncesParPage; 
   $em = $request->GetEm(); // CETTE REQUETE PERMET D'OBTENIR UNIQUEMENT ET DYNAMIQUEMENT LE NOMBRE DE PAGE POUR LA NAVBAR DEDIE
   $qb = $em->createQueryBuilder();  
   $qb->select('a')
@@ -426,13 +436,15 @@ public function recherche($request)
     }
   
   $query = $qb->getQuery();
-  $annonces = $query->getResult();
+  $annonces = $query->getResult(); // toutes les annonces avec ces filtres de recherche
+  
+  $paginator = new Paginator($query, $fetchJoinCollection = true);
   
   $annoncesNombre = count($annonces);
   $pagesTotal = ceil(($annoncesNombre / $annoncesParPage)); 
-  var_dump($pagesTotal);
-  var_dump($annoncesNombre);
-  var_dump($annoncesParPage);
+
+  ///////////// UNE FOIS QU'ON A LE NOMBRE MAX DE PAGES POUR LA NAVBAR ON REQUETE AVEC FILTRE ET NBR D'ANNONCES MAX PAR PAGE POUR N'AFFICHER QUE 12 ANNONCES A LA FOIS
+
   $em = $request->GetEm(); // CETTE REQUETE RENVOIE LES 12 ANNONCES A AFFICHE EN FONCTION DE LA PAGE CHOISIE
   $qb = $em->createQueryBuilder();  
   $qb->select('a')
@@ -499,8 +511,15 @@ public function recherche($request)
   var_dump($offset);
   var_dump($limit);
   $query = $qb->getQuery();
+<<<<<<< HEAD
   $annonces = $query->getResult(); ///////////// CETTE VARIABLE QUI DOIT ETRE TESTER EN TANT QUE NOMBRE MAX D'ANNONCES, PAS LE FINDALL !!!
   var_dump(count($annonces));
+=======
+  $annonces = $query->getResult();
+  
+  $paginator = new Paginator($query, $fetchJoinCollection = true);
+
+>>>>>>> dev
   if ($annonces) {
     http_response_code(200);
     echo $this->twig->render('refreshAnnonce.html',
@@ -519,37 +538,5 @@ public function recherche($request)
       'user' => $user
     ]);
   }
-  
-  public function rechercheFromHome($request)
-  {
-    
-    $typeContrat = $_GET["recherche"];
-    
-    $annoncesParPage = 12;
-  
-    if(isset($_GET['page']) and $_GET['page'] != 0) 
-    {
-       $pageActuelle = intval($_GET['page']);
-    }
-    else // dans le cas ou le localStorage('page') n'est pas définit ou égal a 0
-    {
-       $pageActuelle = 1;  
-    }
-
-    $limit = $pageActuelle * $annoncesParPage;
-    $offset = $limit - $annoncesParPage;
-    
-    $em = $request->GetEm(); // CETTE REQUETE RENVOIE LES 12 ANNONCES A AFFICHE EN FONCTION DE LA PAGE CHOISIE
-    $qb = $em->createQueryBuilder();  
-    $qb->select('a')
-       ->from('Entity\Annonce', 'a')
-       ->orderBy('a.id', 'DESC')
-       ->where('a.type_contrat = ?1') 
-       ->setParameter(1, $typeContrat)
-       ->setFirstResult($offset)
-       ->setMaxResults($limit);
-    
-  }
-  
   
 }  

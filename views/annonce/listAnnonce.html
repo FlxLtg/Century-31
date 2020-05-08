@@ -251,6 +251,21 @@
    }
   
  });
+ 
+/////// methode qui est executer suite au click du bouton location ou vente sur la page d'accueil  \\\\\\\\\ 
+  
+ var url = window.location.href;  // recupere l'url en entier
+ var searchParams = new URLSearchParams(url); // on instancie un objet urlSearchParams
+ 
+ if (searchParams.get("recherche") === "location") { // on analyse si dans l'url il n'y a pas recherche=location
+   rechercheLocation()
+ }
+ 
+ if (searchParams.get("recherche") === "vente") { // on analyse si dans l'url il n'y a pas recherche=vente
+   rechercheVente()
+ }
+
+////////////////////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\                                                                                          
   
   function rechercheVente() {
     var data = JSON.stringify({
@@ -285,7 +300,7 @@
    e.preventDefault();
    rechercheVente()
  });
-  
+   
   function rechercheLocation() {
     var data = JSON.stringify({
             contrat: "location",
