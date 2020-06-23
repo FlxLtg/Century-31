@@ -508,18 +508,18 @@ public function recherche($request)
      $qb->andWhere('a.place_parking = ?14')
         ->setParameter(14, $newData['placeDeParkingAnnonce']);
     }
-  var_dump($offset);
-  var_dump($limit);
+//   var_dump($offset);
+//   var_dump($limit);
   $query = $qb->getQuery();
-<<<<<<< HEAD
+// <<<<<<< HEAD
   $annonces = $query->getResult(); ///////////// CETTE VARIABLE QUI DOIT ETRE TESTER EN TANT QUE NOMBRE MAX D'ANNONCES, PAS LE FINDALL !!!
-  var_dump(count($annonces));
-=======
-  $annonces = $query->getResult();
+//   var_dump(count($annonces));
+// =======
+//   $annonces = $query->getResult();
   
   $paginator = new Paginator($query, $fetchJoinCollection = true);
 
->>>>>>> dev
+// >>>>>>> dev
   if ($annonces) {
     http_response_code(200);
     echo $this->twig->render('refreshAnnonce.html',
