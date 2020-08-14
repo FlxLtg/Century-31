@@ -72,18 +72,13 @@ class AnnonceController extends Controller
  {
   $user = $request->getUser();   
    
-//   if (isset($_GET['recherche'] == "location")) {
-    
-//   }
-   
   echo $this->twig->render('listAnnonce.html', 
       [
         "user" => $user,
       ]
       );
  }
-  
-  
+   
  public function show($request) 
  {
    $annonce = $request->getEm()->getRepository('Entity\Annonce')->find($_GET['annonceID']);

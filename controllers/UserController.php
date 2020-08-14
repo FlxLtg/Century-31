@@ -4,6 +4,7 @@ namespace Controllers;
 
 use Entity\User;
 use Entity\Request;
+use Entity\Newsletter;
 
 require 'bootstrap.php';
 
@@ -310,6 +311,43 @@ class UserController extends Controller
           'message' => $message,
       ));
     }
+  
+  public function subNewsletter($request)
+  {
+    $content_raw = file_get_contents("php://input"); 
+    $data = json_decode($content_raw, true); 
+    
+    if ($this->checkEmail($data['email']) == 1) {
+      
+      if($request->getEm()->getRepository('Entity\Newsletter')->findOneBy(['email'=>$data['email']])) {
+        $message = "Vous êtes déjà abonné à la newsletter";
+        $code = 500;
+      }
+      else {
+        $newsletter = new Newsletter;
+        $newsletter->setEmail($data['email']);
+        $request->getEm()->persist($newsletter);
+        $request->getEm()->flush();        
+        $code = 200;
+        $message = "Vous êtes maintenant inscrit à la newsletter !";
+      }
+    }
+   
+   else {
+     $message = "Veuillez saisir un email valide";
+     $code = 500;
+   }
+    
+    http_response_code($code);
+      echo json_encode(array(
+          'message' => $message,
+    ));
+  }
+  
+  public function unsubNewsletter($request)
+  {
+    
+  }
   
   
 }  

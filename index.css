@@ -136,6 +136,18 @@
   color: #ff9900;
 }
 
+#subscribe.btn-outline-secondary {
+/*     color: #fdfdfd!important; */
+    background-color: white;
+    border-color: #ced4da!important;
+}
+
+#subscribe.btn-outline-secondary:hover, .btn-outline-secondary:focus, .btn-outline-secondary:active, .btn-outline-secondary.active, .open>.dropdown-toggle.btn-outline-secondary {
+    color: #fdfdfd!important;
+    background-color: rgba(255, 153, 0, 1)!important;
+    border-color: #ff9900!important;
+}
+
 #button-addon2.btn-outline-secondary:hover, .btn-outline-secondary:focus, .btn-outline-secondary:active, .btn-outline-secondary.active, .open>.dropdown-toggle.btn-outline-secondary {
     color: #fdfdfd!important;
     background-color: rgba(255, 153, 0, 1)!important;

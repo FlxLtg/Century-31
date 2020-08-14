@@ -102,18 +102,18 @@
         <p>Tous les bons plans, actualités immobilières, astuces et conseils</p>
         <form>
         <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="button-addon2">
+          <input type="text" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="subscribe" id="emailNewsletter">
           <div class="input-group-append">
-            <button class="btn btn-outline-secondary" type="button" id="button-addon2">S'abonner</button>
+            <button class="btn btn-outline-secondary" type="button" id="subscribe">S'abonner</button>
           </div>
         </div>
         <div class="custom-control custom-checkbox">
-          <input class="custom-control-input" type="checkbox" id="custom-control-label" name="newsletter" required>
-          <label class="custom-control-label" for="newsletter">Recevoir la newsletter Century 31</label>
+          <input type="checkbox" class="custom-control-input" id="newsletterCheck">
+          <label class="custom-control-label" for="newsletterCheck">Recevoir la newsletter Century 31</label>
         </div>
         <div class="custom-control custom-checkbox">
-          <input class="custom-control-input" type="checkbox" id="custom-control-label" name="newsletter" required>
-          <label class="custom-control-label" for="newsletter">J'accepte les <a>régles de confidentialité</a></label>
+          <input type="checkbox" class="custom-control-input" id="reglement">
+          <label class="custom-control-label" for="reglement">J'accepte les régles de confidentialité</label>
         </div>
         </form>
       </div>
@@ -153,48 +153,138 @@
     window.location.href = "?c=annonce&t=list&recherche=location";
   });
   
- 
-  window.addEventListener('resize', swiperResize);
-  
-  swiperResize()
-
-  function swiperResize() {
-    var largeur = window.innerWidth;
-    if (largeur < 576) {
     var swiper = new Swiper('.swiper-container', {
         slidesPerView: 1,
-        spaceBetween: 15,
-        freeMode: false,
-        pagination: {
-          el: '.swiper-pagination',
-          clickable: true,
-        },
-      });
-    };
-
-    if (largeur > 576 && largeur < 768) {
-    var swiper = new Swiper('.swiper-container', {
-        slidesPerView: 2,
         spaceBetween: 30,
+        breakpoints: {
+          576: {
+            slidesPerView: 2,
+            spaceBetween: 30,
+          },
+          768: {
+            slidesPerView: 3,
+            spaceBetween: 30,
+          },
+        },
         freeMode: false,
         pagination: {
           el: '.swiper-pagination',
           clickable: true,
         },
-      });
-    }
+      }); 
+  
+  $(".like").click(function() {
+        const annonceID = $(this).data('annonce-id');
 
-    if (largeur > 768) {
-    var swiper = new Swiper('.swiper-container', {
-        slidesPerView: 3,
-        spaceBetween: 30,
-        freeMode: false,
-        pagination: {
-          el: '.swiper-pagination',
-          clickable: true,
-        },
-      });
-    }  
-  }
+        $.ajax({
+            url: "{{ path }}?c=annonce&t=like&annonceID=" + annonceID,
+            type: "GET",
+            dataType: "JSON",
+            contentType: 'application/json',
+            success: function () {
+                const annonce = document.getElementById(annonceID);
+                if (annonce.className === "like fas fa-heart") {
+                    annonce.className = "like far fa-heart";
+                    annonce.style.color = "black";
+                }
+                else if (annonce.className === "like far fa-heart") {
+                    annonce.className = "like fas fa-heart";
+                    annonce.style.color = "red";
+                }
+            },
+            error: function () {
+                console.log('error');
+                alert('Merci de bien vouloir vous connecter pour ajouter cette annonce à votre wishlist.')
+            }
+        });
+    });
+  
+  
+    $("#subscribe").click(function() {
+        var email = $("#emailNewsletter").val();
+        var data = JSON.stringify({
+          email : email
+        });
+      const check1 = document.getElementById('newsletterCheck');
+      const check2 = document.getElementById('reglement');
+      
+      if (check1.checked === false || check2.checked === false) {
+              Swal.fire({
+                icon: 'warning',
+                title: 'Oops...',
+                text: "Vueillez cocher toutes les cases",        
+        });
+      return;
+      }
+      
+        $.ajax({
+            url: "{{ path }}?c=user&t=subNewsletter",
+            type: "POST",
+            dataType: "JSON",
+            contentType: 'application/json',
+            data: data,
+            success: function (response) {
+              Swal.fire({
+                icon: 'success',
+                title: 'Super !',
+                text: response.message,
+              })
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+              const error = JSON.parse(jqXHR.responseText);
+              Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error.message,
+              })
+            },
+        });
+    });
+  
+  
+//   window.addEventListener('resize', swiperResize);
+  
+//   swiperResize()
+
+//   function swiperResize() {
+    
+//     var largeur = window.innerWidth;
+    
+//     if (largeur < 576) {
+//     var swiper = new Swiper('.swiper-container', {
+//         slidesPerView: 1,
+//         spaceBetween: 30,
+//         freeMode: false,
+//         pagination: {
+//           el: '.swiper-pagination',
+//           clickable: true,
+//         },
+//       });
+//     };
+
+//     if (largeur > 576 && largeur < 768) {
+//     var swiper = new Swiper('.swiper-container', {
+//         slidesPerView: 2,
+//         spaceBetween: 30,
+//         freeMode: false,
+//         pagination: {
+//           el: '.swiper-pagination',
+//           clickable: true,
+//         },
+//       });
+//     }
+
+//     if (largeur > 768) {
+//     var swiper = new Swiper('.swiper-container', {
+//         slidesPerView: 3,
+//         spaceBetween: 30,
+//         freeMode: false,
+//         pagination: {
+//           el: '.swiper-pagination',
+//           clickable: true,
+//         },
+//       });
+//     }  
+//   }
 </script>
 {% endblock %}
